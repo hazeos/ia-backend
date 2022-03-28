@@ -1,12 +1,13 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { User } from '../schemas/user.schema';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOneById(id);
+  async findOne(@Param('id') id: string): Promise<User> {
+    return await this.usersService.findOneById(id);
   }
 }
