@@ -22,7 +22,7 @@ export class User {
   password: string;
 
   @Prop({ type: Types.ObjectId, ref: 'Role' })
-  role: Role[];
+  role: Role;
 
   @Prop()
   createdAt: string;
