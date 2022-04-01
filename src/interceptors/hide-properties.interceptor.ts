@@ -13,10 +13,6 @@ export class HidePropertiesInterceptor implements NestInterceptor {
   constructor(private reflector: Reflector) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const contextPermissions = this.reflector.get<string[]>(
-      'permissions',
-      context.getHandler(),
-    );
     const propertiesToHide = this.reflector.get<string[]>(
       'propertiesToHide',
       context.getHandler(),
@@ -31,11 +27,11 @@ export class HidePropertiesInterceptor implements NestInterceptor {
       return next.handle();
     } else {
       return next.handle().pipe(
-        // TODO не удаляет свойства
         map((value) => {
           propertiesToHide.forEach((property) => {
             delete value[property];
           });
+          return value;
         }),
       );
     }

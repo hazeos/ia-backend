@@ -15,6 +15,7 @@ export class UsersService {
         select: '-_id',
         populate: { path: 'permissions', select: '-_id' },
       })
+      .lean()
       .exec();
   }
 
@@ -26,6 +27,7 @@ export class UsersService {
         select: '-_id',
         populate: { path: 'permissions', select: '-_id' },
       })
+      .lean()
       .exec();
     if (!user) {
       throw new NotFoundException(undefined, 'User not found');
@@ -34,6 +36,6 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find().lean().exec();
   }
 }

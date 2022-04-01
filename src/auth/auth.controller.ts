@@ -20,17 +20,17 @@ import { HidePropertiesInterceptor } from '../interceptors/hide-properties.inter
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   async login(@Request() req): Promise<object> {
     return this.authService.login(req.user);
   }
 
-  @HideProperties('password', 'email')
+  @Get('profile')
   @RequiredPermissions(permissions.profile.read)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @HideProperties('password', 'email')
   @UseInterceptors(HidePropertiesInterceptor)
-  @Get('profile')
   async getProfile(@Request() req): Promise<User> {
     console.log(req.user);
     return await req.user;
