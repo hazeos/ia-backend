@@ -30,7 +30,7 @@ export class UsersService {
       .lean()
       .exec();
     if (!user) {
-      throw new NotFoundException(undefined, 'User not found');
+      throw new NotFoundException('User not found');
     }
     return user;
   }

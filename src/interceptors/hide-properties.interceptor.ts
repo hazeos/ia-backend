@@ -23,7 +23,7 @@ export class HidePropertiesInterceptor implements NestInterceptor {
     const userPermissions = user.role.permissions
       .map((permission) => permission.name)
       .filter((permission) => permission.includes(resource));
-    if (userPermissions.includes(`permissions.${resource}.readFull`)) {
+    if (userPermissions.includes(`permissions.${resource}.read_full`)) {
       return next.handle();
     } else {
       return next.handle().pipe(

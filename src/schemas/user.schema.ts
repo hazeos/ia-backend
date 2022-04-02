@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Role } from './role.schema';
+import { Exclude } from 'class-transformer';
 
 export type UserDocument = User & Document;
 
@@ -15,10 +16,11 @@ export class User {
   @Prop()
   middleName: string;
 
-  @Prop()
+  @Prop({ unique: true })
   email: string;
 
   @Prop()
+  @Exclude()
   password: string;
 
   @Prop({ type: Types.ObjectId, ref: 'Role' })
