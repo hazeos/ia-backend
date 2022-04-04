@@ -12,22 +12,18 @@ export class UsersService {
       .findOne({ email: email })
       .populate({
         path: 'role',
-        select: '-_id',
-        populate: { path: 'permissions', select: '-_id' },
+        populate: { path: 'permissions' },
       })
-      .lean()
       .exec();
   }
 
   async findOneById(id: string): Promise<User> {
     const user = await this.userModel
-      .findById(id, '-password')
+      .findById(id)
       .populate({
         path: 'role',
-        select: '-_id',
-        populate: { path: 'permissions', select: '-_id' },
+        populate: { path: 'permissions' },
       })
-      .lean()
       .exec();
     if (!user) {
       throw new NotFoundException('User not found');

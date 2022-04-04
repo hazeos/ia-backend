@@ -13,8 +13,7 @@ import { User } from '../schemas/user.schema';
 import { RequiredPermissions } from '../decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from './guards/permissions.guard';
-import { HideProperties } from '../decorators/hide-properties.decorator';
-import { HidePropertiesInterceptor } from '../interceptors/hide-properties.interceptor';
+import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -29,8 +28,7 @@ export class AuthController {
   @Get('profile')
   @RequiredPermissions(permissions.profile.read)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @HideProperties('password', 'email')
-  @UseInterceptors(HidePropertiesInterceptor)
+  @UseInterceptors(MongooseClassSerializerInterceptor(User))
   async getProfile(@Request() req): Promise<User> {
     console.log(req.user);
     return await req.user;
