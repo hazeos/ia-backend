@@ -30,7 +30,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UseInterceptors(MongooseClassSerializerInterceptor(User))
   async getProfile(@Request() req): Promise<User> {
-    console.log(req.user);
     return await req.user;
   }
 }

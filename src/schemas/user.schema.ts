@@ -1,40 +1,35 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
 import { Role } from './role.schema';
-import { Exclude, Expose, Transform, Type } from 'class-transformer';
+import { Exclude, Transform, Type } from 'class-transformer';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class User {
-  @Prop()
-  _id: Types.ObjectId;
+  @Prop({ type: SchemaTypes.ObjectId })
+  @Transform((value) => value.obj._id.toString())
+  _id: string;
 
-  @Prop()
+  @Prop({ type: SchemaTypes.String })
   firstName: string;
 
-  @Prop()
+  @Prop({ type: SchemaTypes.String })
   lastName: string;
 
-  @Prop()
+  @Prop({ type: SchemaTypes.String })
   middleName: string;
 
-  @Prop({ unique: true })
+  @Prop({ type: SchemaTypes.String, unique: true })
   email: string;
 
-  @Prop()
-  @Expose({ groups: ['administrator'] })
+  @Prop({ type: SchemaTypes.String })
+  @Exclude()
   password: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'Role' })
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Role' })
   @Type(() => Role)
   role: Role;
-
-  @Prop()
-  createdAt: string;
-
-  @Prop()
-  updatedAt: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

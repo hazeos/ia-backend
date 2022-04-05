@@ -1,17 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
+import { Expose, Transform } from 'class-transformer';
+import { Roles } from '../shared/constants/enums/roles.enum';
 
 export type PermissionDocument = Permission & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Permission {
-  @Prop()
-  _id: Types.ObjectId;
+  @Prop({ type: SchemaTypes.ObjectId })
+  @Transform((value) => value.obj._id.toString())
+  @Expose({ groups: [Roles.ADMINISTRATOR] })
+  _id: string;
 
-  @Prop()
+  @Prop({ type: SchemaTypes.String })
   name: string;
 
-  @Prop()
+  @Prop({ type: SchemaTypes.String })
   description: string;
 }
 
