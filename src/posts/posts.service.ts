@@ -13,12 +13,26 @@ export class PostsService {
     return 'This action adds a new post';
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  async findAll(): Promise<Post[]> {
+    return await this.postModel
+      .find()
+      .populate({
+        path: 'files',
+        populate: { path: 'createdBy updatedBy' },
+      })
+      .populate('createdBy updatedBy')
+      .exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  async findOne(id: string): Promise<Post> {
+    return await this.postModel
+      .findById(id)
+      .populate({
+        path: 'files',
+        populate: { path: 'createdBy updatedBy' },
+      })
+      .populate('createdBy updatedBy')
+      .exec();
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {

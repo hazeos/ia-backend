@@ -5,6 +5,7 @@ import {
   UseGuards,
   Get,
   UseInterceptors,
+  Body,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
@@ -23,6 +24,17 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   async login(@Request() req): Promise<object> {
     return this.authService.login(req.user);
+  }
+
+  @Post('public-login')
+  @UseGuards(LocalAuthGuard)
+  async publicLogin(@Request() req): Promise<object> {
+    return this.authService.login(req.user);
+  }
+
+  @Post('hash')
+  async hash(@Body() body: { value: string }): Promise<string> {
+    return this.authService.hash(body.value);
   }
 
   @Get('profile')

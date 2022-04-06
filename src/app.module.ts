@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
+import { FilesModule } from './files/files.module';
 
 const env = process.env.NODE_ENV;
 
@@ -22,6 +23,7 @@ const env = process.env.NODE_ENV;
     UsersModule,
     AuthModule,
     PostsModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

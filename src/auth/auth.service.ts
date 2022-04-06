@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { compare } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 import { User } from '../schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 
@@ -36,5 +36,10 @@ export class AuthService {
       email: user.email,
       role: user.role,
     };
+  }
+
+  async hash(value: string): Promise<string> {
+    console.log(await compare('password', await hash(value, 12)));
+    return await hash(value, 12);
   }
 }

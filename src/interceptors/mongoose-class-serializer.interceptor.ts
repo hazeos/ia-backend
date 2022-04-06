@@ -26,15 +26,16 @@ export const MongooseClassSerializerInterceptor = (
       return plainToInstance(classToIntercept, document.toJSON(), options);
     }
 
-    // private prepareResponse(
-    //   response: PlainLiteralObject | PlainLiteralObject[],
-    // ): any {
-    //   if (Array.isArray(response)) {
-    //     return response.map(this.changePlainObjectToClass);
-    //   }
-    //
-    //   return this.changePlainObjectToClass(response);
-    // }
+    private prepareResponse(
+      response: PlainLiteralObject | PlainLiteralObject[],
+      options: ClassTransformOptions,
+    ): any {
+      if (Array.isArray(response)) {
+        return response.map((v) => this.changePlainObjectToClass(v, options));
+      }
+
+      return this.changePlainObjectToClass(response, options);
+    }
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
       const request = context.switchToHttp().getRequest();
@@ -48,10 +49,7 @@ export const MongooseClassSerializerInterceptor = (
       options: ClassTransformOptions,
     ): PlainLiteralObject | PlainLiteralObject[] {
       const opts = { groups: [this.role] } as ClassTransformOptions;
-      return super.serialize(
-        this.changePlainObjectToClass(response, opts),
-        opts,
-      );
+      return super.serialize(this.prepareResponse(response, opts), opts);
     }
   };
 };
