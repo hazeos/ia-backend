@@ -7,7 +7,6 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({ type: SchemaTypes.ObjectId })
   @Transform((value) => value.obj._id.toString())
   _id: string;
 

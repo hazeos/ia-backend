@@ -9,8 +9,9 @@ import { Post, PostDocument } from '../schemas/post.schema';
 export class PostsService {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+  async create(createPostDto: CreatePostDto): Promise<Post> {
+    const createdPost = new this.postModel(createPostDto);
+    return createdPost.save();
   }
 
   async findAll(): Promise<Post[]> {

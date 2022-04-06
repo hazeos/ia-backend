@@ -8,7 +8,6 @@ export type RoleDocument = Role & Document;
 
 @Schema({ timestamps: true })
 export class Role {
-  @Prop({ type: SchemaTypes.ObjectId })
   @Transform((value) => value.obj._id.toString())
   @Expose({ groups: [Roles.ADMINISTRATOR] })
   _id: string;
