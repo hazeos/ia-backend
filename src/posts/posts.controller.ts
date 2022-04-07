@@ -58,16 +58,33 @@ export class PostsController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
   async findOne(@Param('id') id: string): Promise<TPost> {
-    return this.postsService.findOne(id);
+    return await this.postsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(+id, updatePostDto);
+  @RequiredPermissions(permissions.posts.update)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UsePipes(ValidationPipe)
+  @UseFilters(MongoExceptionFilter)
+  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
+  async update(
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+    @Req() req,
+  ): Promise<TPost> {
+    return await this.postsService.update(id, {
+      ...updatePostDto,
+      updatedBy: req.user,
+    } as UpdatePostDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(+id);
+  @RequiredPermissions(permissions.posts.delete)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UsePipes(ValidationPipe)
+  @UseFilters(MongoExceptionFilter)
+  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
+  async remove(@Param('id') id: string): Promise<TPost> {
+    return await this.postsService.remove(id);
   }
 }

@@ -3,7 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Post, PostDocument } from '../schemas/post.schema';
+import { Post as TPost, Post, PostDocument } from '../schemas/post.schema';
 
 @Injectable()
 export class PostsService {
@@ -36,11 +36,14 @@ export class PostsService {
       .exec();
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: string, updatePostDto: UpdatePostDto): Promise<TPost> {
+    return await this.postModel
+      .findByIdAndUpdate(id, updatePostDto, { new: true })
+      .populate('createdBy updatedBy')
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: string): Promise<TPost> {
+    return await this.postModel.findByIdAndDelete(id).exec();
   }
 }
