@@ -93,8 +93,8 @@ describe('PostsController', () => {
   describe('create', () => {
     it('should create a post', async () => {
       const createPostDto: CreatePostDto = {
-        header: '',
-        text: '',
+        header: 'Test',
+        text: 'Test',
         files: [],
         createdBy: new User(),
         updatedBy: new User(),
