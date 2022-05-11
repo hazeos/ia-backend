@@ -25,7 +25,7 @@ const mockCreatePostDto = (
 const mockUpdatePostDto = (
   header = 'Test',
   text = 'Test',
-  files = [''],
+  files = ['123'],
 ): UpdatePostDto => ({
   header,
   text,
@@ -59,14 +59,12 @@ describe('PostsService', () => {
         {
           provide: getModelToken(Post.name),
           useValue: {
-            new: jest.fn().mockResolvedValue(mockPost()),
-            constructor: jest.fn().mockResolvedValue(mockPost()),
             create: jest.fn().mockResolvedValue(mockPost()),
-            populate: jest.fn().mockResolvedValue([mockPost()]),
-            find: jest.fn().mockResolvedValue([mockPost()]),
-            findOne: jest.fn().mockResolvedValue(mockPost()),
-            update: jest.fn(),
-            remove: jest.fn(),
+            find: jest.fn(),
+            findById: jest.fn(),
+            findByIdAndUpdate: jest.fn(),
+            findByIdAndDelete: jest.fn(),
+            populate: jest.fn(),
             exec: jest.fn(),
           },
         },
@@ -83,6 +81,7 @@ describe('PostsService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+    expect(postModel).toBeDefined();
   });
 
   describe('create', () => {
@@ -96,8 +95,67 @@ describe('PostsService', () => {
 
   describe('findAll', () => {
     it('should return an array of posts', async () => {
+      jest.spyOn(postModel, 'find').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue([mockPost()]),
+      } as any);
       const posts = await service.findAll();
       expect(posts).toEqual([mockPost()]);
+      expect(postModel.find).toHaveBeenCalled();
+    });
+  });
+
+  describe('findById', () => {
+    it('should return a post', async () => {
+      const postId = '123';
+      jest.spyOn(postModel, 'findById').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockPost(postId)),
+      } as any);
+
+      const post = await service.findOne(postId);
+      expect(post).toEqual(mockPost(postId));
+      expect(postModel.findById).toHaveBeenCalledWith(postId);
+    });
+  });
+
+  describe('findByIdAndUpdate', () => {
+    it('should update post and return updated post', async () => {
+      const postId = '123';
+      const postHeader = 'Test';
+      const postText = 'Test';
+      const postFiles = [new File()];
+      const postUpdateFiles = ['123'];
+      jest.spyOn(postModel, 'findByIdAndUpdate').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockPost(postId, postHeader, postText, postFiles)),
+      } as any);
+
+      const post = await service.update(
+        postId,
+        mockUpdatePostDto(postHeader, postText, postUpdateFiles),
+      );
+      expect(post).toEqual(mockPost(postId, postHeader, postText, postFiles));
+      expect(postModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        postId,
+        mockUpdatePostDto(postHeader, postText, postUpdateFiles),
+        { new: true },
+      );
+    });
+  });
+
+  describe('remove', () => {
+    it('should find a posts by id, remove it and return deleted post', async () => {
+      const postId = '1';
+      jest.spyOn(postModel, 'findByIdAndDelete').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockPost(postId)),
+      } as any);
+      const posts = await service.remove(postId);
+      expect(posts).toEqual(mockPost(postId));
+      expect(postModel.findByIdAndDelete).toHaveBeenCalledWith(postId);
     });
   });
 });
