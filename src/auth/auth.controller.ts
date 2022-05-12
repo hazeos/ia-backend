@@ -6,7 +6,6 @@ import {
   Get,
   UseInterceptors,
   Body,
-  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
@@ -27,12 +26,10 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @Post('public-login')
-  @UseGuards(LocalAuthGuard)
-  async publicLogin(@Request() req): Promise<object> {
-    return this.authService.login(req.user);
-  }
-
+  /**
+   * For password hash generation
+   * @param body string value to make hash from
+   */
   @Post('hash')
   async hash(@Body() body: { value: string }): Promise<string> {
     return this.authService.hash(body.value);
