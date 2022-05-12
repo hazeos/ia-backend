@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { Expose, Transform, Type } from 'class-transformer';
-import { Roles } from '../shared/constants/enums/roles.enum';
-import { User } from './user.schema';
+import { Roles } from '../../shared/constants/enums/roles.enum';
+import { User } from '../../users/entities/user.entity';
 
 export type FileDocument = File & Document;
 
@@ -37,4 +37,4 @@ export class File {
   updatedAt?: Date;
 }
 
-export const FileSchema = SchemaFactory.createForClass(File);
+export const FileEntity = SchemaFactory.createForClass(File);

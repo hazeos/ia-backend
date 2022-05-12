@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { compare, hash } from 'bcryptjs';
-import { User } from '../schemas/user.schema';
+import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../schemas/role.schema';
 

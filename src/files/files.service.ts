@@ -3,7 +3,7 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { File, FileDocument } from '../schemas/file.schema';
+import { File, FileDocument } from './entities/file.entity';
 
 @Injectable()
 export class FilesService {

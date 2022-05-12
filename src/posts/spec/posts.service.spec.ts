@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsService } from '../posts.service';
-import { User } from '../../schemas/user.schema';
-import { File } from '../../schemas/file.schema';
+import { User } from '../../users/entities/user.entity';
+import { File } from '../../files/entities/file.entity';
 import {
   mockPost,
   mockCreatePostDto,

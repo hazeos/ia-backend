@@ -6,7 +6,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from '../schemas/user.schema';
+import { User } from './entities/user.entity';
 import { RequiredPermissions } from '../decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

@@ -1,7 +1,7 @@
-import { User } from '../../../schemas/user.schema';
+import { User } from '../../../users/entities/user.entity';
 import { CreatePostDto } from '../../dto/create-post.dto';
 import { UpdatePostDto } from '../../dto/update-post.dto';
-import { File } from '../../../schemas/file.schema';
+import { File } from '../../../files/entities/file.entity';
 import { Post } from '../../entities/post.entity';
 
 export const mockCreatePostDto = (

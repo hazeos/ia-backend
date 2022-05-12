@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsController } from '../posts.controller';
 import { PostsService } from '../posts.service';
-import { User } from '../../schemas/user.schema';
+import { User } from '../../users/entities/user.entity';
 import {
   mockPost,
   mockCreatePostDto,
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
-import { File } from '../../schemas/file.schema';
+import { File } from '../../files/entities/file.entity';
 
 describe('PostsController', () => {
   let postsController: PostsController;

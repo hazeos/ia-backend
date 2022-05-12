@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
-import { Role } from './role.schema';
+import { Role } from '../../schemas/role.schema';
 import { Exclude, Transform, Type } from 'class-transformer';
 
 export type UserDocument = User & Document;
@@ -31,4 +31,4 @@ export class User {
   role: Role;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserEntity = SchemaFactory.createForClass(User);

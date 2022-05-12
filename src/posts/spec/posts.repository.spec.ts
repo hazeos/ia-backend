@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { Post, PostDocument } from '../entities/post.entity';
 import { getModelToken } from '@nestjs/mongoose';
-import { User } from '../../schemas/user.schema';
-import { File } from '../../schemas/file.schema';
+import { User } from '../../users/entities/user.entity';
+import { File } from '../../files/entities/file.entity';
 import { PostsRepository } from '../posts.repository';
 import {
   mockPost,

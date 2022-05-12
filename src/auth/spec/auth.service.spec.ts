@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { AuthService } from '../auth.service';
+import { UsersService } from '../../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../schemas/user.schema';
-import { Role } from '../schemas/role.schema';
+import { User } from '../../users/entities/user.entity';
+import { Role } from '../../schemas/role.schema';
 
 const mockUser = (
   _id = '12345',
