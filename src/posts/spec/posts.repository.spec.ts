@@ -1,61 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostsService } from './posts.service';
 import { Model } from 'mongoose';
-import { Post, PostDocument } from './entities/post.entity';
+import { Post, PostDocument } from '../entities/post.entity';
 import { getModelToken } from '@nestjs/mongoose';
-import { User } from '../schemas/user.schema';
-import { File } from '../schemas/file.schema';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { User } from '../../schemas/user.schema';
+import { File } from '../../schemas/file.schema';
+import { PostsRepository } from '../posts.repository';
+import {
+  mockPost,
+  mockCreatePostDto,
+  mockUpdatePostDto,
+} from './mocks/posts.mocks';
 
-const mockCreatePostDto = (
-  header = 'Test',
-  text = 'Test',
-  files = [''],
-  createdBy = new User(),
-  updatedBy = new User(),
-): CreatePostDto => ({
-  header,
-  text,
-  files,
-  createdBy,
-  updatedBy,
-});
-
-const mockUpdatePostDto = (
-  header = 'Test',
-  text = 'Test',
-  files = ['123'],
-): UpdatePostDto => ({
-  header,
-  text,
-  files,
-});
-
-const mockPost = (
-  _id = '1',
-  header = 'Test',
-  text = 'Test',
-  files = [new File()],
-  createdBy = new User(),
-  updatedBy = new User(),
-): Post => ({
-  _id,
-  header,
-  text,
-  files,
-  createdBy,
-  updatedBy,
-});
-
-describe('PostsService', () => {
-  let service: PostsService;
+describe('PostsRepository', () => {
+  let repository: PostsRepository;
   let postModel: Model<PostDocument>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        PostsService,
+        PostsRepository,
         {
           provide: getModelToken(Post.name),
           useValue: {
@@ -71,7 +34,7 @@ describe('PostsService', () => {
       ],
     }).compile();
 
-    service = module.get<PostsService>(PostsService);
+    repository = module.get<PostsRepository>(PostsRepository);
     postModel = module.get<Model<PostDocument>>(getModelToken(Post.name));
   });
 
@@ -79,14 +42,14 @@ describe('PostsService', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('Dependencies should be defined', () => {
+    expect(repository).toBeDefined();
     expect(postModel).toBeDefined();
   });
 
   describe('create', () => {
     it('should create a post', async () => {
-      const newPost = await service.create(
+      const newPost = await repository.create(
         mockCreatePostDto('Test', 'Test', [], new User(), new User()),
       );
       expect(newPost).toEqual(mockPost('1', 'Test', 'Test', [new File()]));
@@ -99,7 +62,7 @@ describe('PostsService', () => {
         populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue([mockPost()]),
       } as any);
-      const posts = await service.findAll();
+      const posts = await repository.findAll();
       expect(posts).toEqual([mockPost()]);
       expect(postModel.find).toHaveBeenCalled();
     });
@@ -113,7 +76,7 @@ describe('PostsService', () => {
         exec: jest.fn().mockResolvedValue(mockPost(postId)),
       } as any);
 
-      const post = await service.findOne(postId);
+      const post = await repository.findOne(postId);
       expect(post).toEqual(mockPost(postId));
       expect(postModel.findById).toHaveBeenCalledWith(postId);
     });
@@ -133,7 +96,7 @@ describe('PostsService', () => {
           .mockResolvedValue(mockPost(postId, postHeader, postText, postFiles)),
       } as any);
 
-      const post = await service.update(
+      const post = await repository.update(
         postId,
         mockUpdatePostDto(postHeader, postText, postUpdateFiles),
       );
@@ -153,7 +116,7 @@ describe('PostsService', () => {
         populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockPost(postId)),
       } as any);
-      const posts = await service.remove(postId);
+      const posts = await repository.remove(postId);
       expect(posts).toEqual(mockPost(postId));
       expect(postModel.findByIdAndDelete).toHaveBeenCalledWith(postId);
     });

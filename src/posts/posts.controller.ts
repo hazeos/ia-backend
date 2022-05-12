@@ -22,7 +22,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequiredPermissions } from '../decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
-import { MongoExceptionFilter } from '../exceptions/mongo-exception.filter';
+import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
 
 @Controller('posts')
 export class PostsController {
