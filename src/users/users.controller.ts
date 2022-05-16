@@ -22,6 +22,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UseInterceptors(MongooseClassSerializerInterceptor(User))
   async findOne(@Param('id') id: string): Promise<User> {
-    return await this.usersService.findOneById(id);
+    return await this.usersService.findOne(id);
   }
 }

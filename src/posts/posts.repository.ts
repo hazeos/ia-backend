@@ -2,14 +2,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './entities/post.entity';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { IBaseRepository } from '../domain/repository/base-repository.interface';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
-export class PostsRepository
-  implements IBaseRepository<Post, CreatePostDto, UpdatePostDto>
-{
+export class PostsRepository {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
   async create(createDto: CreatePostDto): Promise<Post> {
