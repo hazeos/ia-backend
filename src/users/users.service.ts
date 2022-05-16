@@ -1,22 +1,50 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './entities/user.entity';
-import { Model } from 'mongoose';
-import { UsersRepository } from './users.repository';
+import { Inject, Injectable } from '@nestjs/common';
+import { User } from './entities/user.entity';
+import { IUsersService } from './interfaces/users-service.interface';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { FilterQuery } from 'mongoose';
+import { IUsersRepositoryToken } from '../domain/di.tokens';
+import { IUsersRepository } from './interfaces/users-repository.interface';
 
 @Injectable()
-export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+export class UsersService
+  implements IUsersService<User, CreateUserDto, UpdateUserDto>
+{
+  constructor(
+    @Inject(IUsersRepositoryToken)
+    private readonly usersRepository: IUsersRepository<
+      User,
+      CreateUserDto,
+      UpdateUserDto
+    >,
+  ) {}
+
+  async create(createDto: CreateUserDto): Promise<User> {
+    return Promise.resolve(undefined);
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.findAll();
+  }
+
+  async findOne(filter: FilterQuery<User>): Promise<User> {
+    return await this.usersRepository.findOne(filter);
+  }
+
+  async findOneById(id: string): Promise<User> {
+    return await this.usersRepository.findOneById(id);
+  }
 
   async findOneByEmail(email: string): Promise<User> {
     return await this.usersRepository.findOne({ email: email });
   }
 
-  async findOne(id: string): Promise<User> {
-    return this.usersRepository.findOneById(id);
+  async update(id: string, updateDto: UpdateUserDto): Promise<User> {
+    return Promise.resolve(undefined);
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.usersRepository.findAll();
+  async remove(id: string): Promise<User> {
+    return Promise.resolve(undefined);
   }
 }

@@ -3,11 +3,12 @@ import { PostsController } from '../posts.controller';
 import { PostsService } from '../posts.service';
 import { User } from '../../users/entities/user.entity';
 import {
-  mockPost,
   mockCreatePostDto,
+  mockPost,
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 import { File } from '../../files/entities/file.entity';
+import { IPostsServiceToken } from '../../domain/di.tokens';
 
 describe('PostsController', () => {
   let postsController: PostsController;
@@ -18,11 +19,12 @@ describe('PostsController', () => {
       controllers: [PostsController],
       providers: [
         {
-          provide: PostsService,
+          provide: IPostsServiceToken,
           useValue: {
             create: jest.fn().mockResolvedValue(mockPost()),
             findAll: jest.fn(),
             findOne: jest.fn(),
+            findOneById: jest.fn(),
             update: jest.fn(),
             remove: jest.fn(),
           },
@@ -31,7 +33,7 @@ describe('PostsController', () => {
     }).compile();
 
     postsController = module.get<PostsController>(PostsController);
-    postsService = module.get<PostsService>(PostsService);
+    postsService = module.get<PostsService>(IPostsServiceToken);
   });
 
   it('Dependencies should be defined', () => {
@@ -58,13 +60,15 @@ describe('PostsController', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findOneById', () => {
     it('should return a post', async () => {
       const postId = '123';
-      jest.spyOn(postsService, 'findOne').mockResolvedValue(mockPost(postId));
-      const post = await postsController.findOne(postId);
+      jest
+        .spyOn(postsService, 'findOneById')
+        .mockResolvedValue(mockPost(postId));
+      const post = await postsController.findOneById(postId);
       expect(post).toEqual(mockPost(postId));
-      expect(postsService.findOne).toHaveBeenCalledWith(postId);
+      expect(postsService.findOneById).toHaveBeenCalledWith(postId);
     });
   });
 

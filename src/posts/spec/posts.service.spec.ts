@@ -3,11 +3,12 @@ import { PostsService } from '../posts.service';
 import { User } from '../../users/entities/user.entity';
 import { File } from '../../files/entities/file.entity';
 import {
-  mockPost,
   mockCreatePostDto,
+  mockPost,
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 import { PostsRepository } from '../posts.repository';
+import { IPostsRepositoryToken } from '../../domain/di.tokens';
 
 describe('PostsService', () => {
   let postsService: PostsService;
@@ -18,11 +19,12 @@ describe('PostsService', () => {
       providers: [
         PostsService,
         {
-          provide: PostsRepository,
+          provide: IPostsRepositoryToken,
           useValue: {
             create: jest.fn().mockResolvedValue(mockPost()),
             findAll: jest.fn(),
             findOne: jest.fn(),
+            findOneById: jest.fn(),
             update: jest.fn(),
             remove: jest.fn(),
           },
@@ -31,7 +33,7 @@ describe('PostsService', () => {
     }).compile();
 
     postsService = module.get<PostsService>(PostsService);
-    postsRepository = module.get<PostsRepository>(PostsRepository);
+    postsRepository = module.get<PostsRepository>(IPostsRepositoryToken);
   });
 
   afterEach(() => {
@@ -61,16 +63,16 @@ describe('PostsService', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findOneById', () => {
     it('should return a post', async () => {
       const postId = '123';
       jest
-        .spyOn(postsRepository, 'findOne')
+        .spyOn(postsRepository, 'findOneById')
         .mockResolvedValue(mockPost(postId));
 
-      const post = await postsService.findOne(postId);
+      const post = await postsService.findOneById(postId);
       expect(post).toEqual(mockPost(postId));
-      expect(postsRepository.findOne).toHaveBeenCalledWith(postId);
+      expect(postsRepository.findOneById).toHaveBeenCalledWith(postId);
     });
   });
 

@@ -1,13 +1,13 @@
-import { IBaseRepository } from '../domain/repositories/base-repository.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, Types } from 'mongoose';
 import { NotFoundException } from '@nestjs/common';
+import { IUsersRepository } from './interfaces/users-repository.interface';
 
 export class UsersRepository
-  implements IBaseRepository<User, CreateUserDto, UpdateUserDto>
+  implements IUsersRepository<User, CreateUserDto, UpdateUserDto>
 {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
@@ -25,7 +25,21 @@ export class UsersRepository
       .exec();
   }
 
+  async findOne(filter: FilterQuery<User>): Promise<User> {
+    return await this.userModel
+      .findOne(filter)
+      .populate({
+        path: 'role',
+        populate: { path: 'permissions' },
+      })
+      .exec();
+  }
+
   async findOneById(id: string): Promise<User> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('Incorrect ID');
+    }
+
     const user = await this.userModel
       .findById(id)
       .populate({
@@ -45,10 +59,5 @@ export class UsersRepository
 
   async remove(id: string): Promise<User> {
     return Promise.resolve(undefined);
-  }
-
-  async findOne(filter: FilterQuery<User>): Promise<User> {
-    return Promise.resolve(undefined);
-    // throw new NotImplementedException();
   }
 }

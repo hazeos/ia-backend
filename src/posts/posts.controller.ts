@@ -1,19 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseInterceptors,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
   Req,
   UseFilters,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post as TPost } from './entities/post.entity';
@@ -23,17 +23,26 @@ import { RequiredPermissions } from '../decorators/required-permissions.decorato
 import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
+import { IPostsService } from './interfaces/posts-service.interface';
+import { IPostsServiceToken } from '../domain/di.tokens';
 
 @Controller('posts')
+@UseGuards(JwtAuthGuard, PermissionsGuard)
+@UseInterceptors(MongooseClassSerializerInterceptor(TPost))
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    @Inject(IPostsServiceToken)
+    private readonly postsService: IPostsService<
+      TPost,
+      CreatePostDto,
+      UpdatePostDto
+    >,
+  ) {}
 
   @Post()
   @RequiredPermissions(permissions.posts.create)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UsePipes(ValidationPipe)
   @UseFilters(MongoExceptionFilter)
-  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
   async create(
     @Body() createPostDto: CreatePostDto,
     @Req() req,
@@ -47,26 +56,20 @@ export class PostsController {
 
   @Get()
   @RequiredPermissions(permissions.posts.read)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
   async findAll(): Promise<TPost[]> {
     return await this.postsService.findAll();
   }
 
   @Get(':id')
   @RequiredPermissions(permissions.posts.read)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
-  async findOne(@Param('id') id: string): Promise<TPost> {
-    return await this.postsService.findOne(id);
+  async findOneById(@Param('id') id: string): Promise<TPost> {
+    return await this.postsService.findOneById(id);
   }
 
   @Patch(':id')
   @RequiredPermissions(permissions.posts.update)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UsePipes(ValidationPipe)
   @UseFilters(MongoExceptionFilter)
-  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
   async update(
     @Param('id') id: string,
     @Body() updatePostDto: UpdatePostDto,
@@ -80,10 +83,8 @@ export class PostsController {
 
   @Delete(':id')
   @RequiredPermissions(permissions.posts.delete)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UsePipes(ValidationPipe)
   @UseFilters(MongoExceptionFilter)
-  @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
   async remove(@Param('id') id: string): Promise<TPost> {
     return await this.postsService.remove(id);
   }

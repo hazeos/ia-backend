@@ -1,14 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { Inject, Injectable } from '@nestjs/common';
 import { compare, hash } from 'bcryptjs';
 import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../schemas/role.schema';
+import { IUsersServiceToken } from '../domain/di.tokens';
+import { IUsersService } from '../users/interfaces/users-service.interface';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    @Inject(IUsersServiceToken)
+    private readonly usersService: IUsersService<
+      User,
+      CreateUserDto,
+      UpdateUserDto
+    >,
     private jwtService: JwtService,
   ) {}
 
@@ -16,7 +24,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<User | boolean> {
-    const user = await this.usersService.findOneByEmail(email);
+    const user = await this.usersService.findOne({ email: email });
     if (user) {
       const match = await compare(password, user.password);
       if (match) {

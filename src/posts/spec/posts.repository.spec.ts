@@ -6,13 +6,13 @@ import { User } from '../../users/entities/user.entity';
 import { File } from '../../files/entities/file.entity';
 import { PostsRepository } from '../posts.repository';
 import {
-  mockPost,
   mockCreatePostDto,
+  mockPost,
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 
 describe('PostsRepository', () => {
-  let repository: PostsRepository;
+  let postsRepository: PostsRepository;
   let postModel: Model<PostDocument>;
 
   beforeEach(async () => {
@@ -34,7 +34,7 @@ describe('PostsRepository', () => {
       ],
     }).compile();
 
-    repository = module.get<PostsRepository>(PostsRepository);
+    postsRepository = module.get<PostsRepository>(PostsRepository);
     postModel = module.get<Model<PostDocument>>(getModelToken(Post.name));
   });
 
@@ -43,13 +43,13 @@ describe('PostsRepository', () => {
   });
 
   it('Dependencies should be defined', () => {
-    expect(repository).toBeDefined();
+    expect(postsRepository).toBeDefined();
     expect(postModel).toBeDefined();
   });
 
   describe('create', () => {
     it('should create a post', async () => {
-      const newPost = await repository.create(
+      const newPost = await postsRepository.create(
         mockCreatePostDto('Test', 'Test', [], new User(), new User()),
       );
       expect(newPost).toEqual(mockPost('1', 'Test', 'Test', [new File()]));
@@ -62,7 +62,7 @@ describe('PostsRepository', () => {
         populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue([mockPost()]),
       } as any);
-      const posts = await repository.findAll();
+      const posts = await postsRepository.findAll();
       expect(posts).toEqual([mockPost()]);
       expect(postModel.find).toHaveBeenCalled();
     });
@@ -76,7 +76,7 @@ describe('PostsRepository', () => {
         exec: jest.fn().mockResolvedValue(mockPost(postId)),
       } as any);
 
-      const post = await repository.findOne(postId);
+      const post = await postsRepository.findOneById(postId);
       expect(post).toEqual(mockPost(postId));
       expect(postModel.findById).toHaveBeenCalledWith(postId);
     });
@@ -96,7 +96,7 @@ describe('PostsRepository', () => {
           .mockResolvedValue(mockPost(postId, postHeader, postText, postFiles)),
       } as any);
 
-      const post = await repository.update(
+      const post = await postsRepository.update(
         postId,
         mockUpdatePostDto(postHeader, postText, postUpdateFiles),
       );
@@ -116,7 +116,7 @@ describe('PostsRepository', () => {
         populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockPost(postId)),
       } as any);
-      const posts = await repository.remove(postId);
+      const posts = await postsRepository.remove(postId);
       expect(posts).toEqual(mockPost(postId));
       expect(postModel.findByIdAndDelete).toHaveBeenCalledWith(postId);
     });

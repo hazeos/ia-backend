@@ -6,6 +6,7 @@ import { UsersController } from './users.controller';
 import { Role, RoleSchema } from '../schemas/role.schema';
 import { Permission, PermissionSchema } from '../schemas/permission.schema';
 import { UsersRepository } from './users.repository';
+import { IUsersRepositoryToken, IUsersServiceToken } from '../domain/di.tokens';
 
 @Module({
   imports: [
@@ -15,8 +16,11 @@ import { UsersRepository } from './users.repository';
       { name: Permission.name, schema: PermissionSchema },
     ]),
   ],
-  providers: [UsersService, UsersRepository],
+  providers: [
+    { provide: IUsersServiceToken, useClass: UsersService },
+    { provide: IUsersRepositoryToken, useClass: UsersRepository },
+  ],
   controllers: [UsersController],
-  exports: [UsersService],
+  exports: [{ provide: IUsersServiceToken, useClass: UsersService }],
 })
 export class UsersModule {}
