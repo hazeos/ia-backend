@@ -21,7 +21,7 @@ export class UsersService
   ) {}
 
   async create(createDto: CreateUserDto): Promise<User> {
-    return Promise.resolve(undefined);
+    return await this.usersRepository.create(createDto);
   }
 
   async findAll(): Promise<User[]> {

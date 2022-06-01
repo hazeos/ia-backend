@@ -9,10 +9,10 @@ import { ClassConstructor } from 'class-transformer';
 
 export const Match = <T>(
   type: ClassConstructor<T>,
-  property: (o: T) => any,
+  property: (o: T) => string | number,
   validationOptions?: ValidationOptions,
 ) => {
-  return (object: any, propertyName: string) => {
+  return (object: T, propertyName: string): void => {
     registerDecorator({
       target: object.constructor,
       propertyName,
@@ -25,13 +25,13 @@ export const Match = <T>(
 
 @ValidatorConstraint({ name: 'Match' })
 export class MatchConstraint implements ValidatorConstraintInterface {
-  validate(value: any, args: ValidationArguments): boolean {
+  validate(value: string | number, args: ValidationArguments): boolean {
     const [fn] = args.constraints;
     return fn(args.object) === value;
   }
 
   defaultMessage(args: ValidationArguments): string {
-    const [constraintProperty]: (() => any)[] = args.constraints;
-    return `${constraintProperty} and ${args.property} does not match`;
+    const [fn] = args.constraints;
+    return `${fn(args.object)} and ${args.property} fields does not match`;
   }
 }

@@ -16,11 +16,11 @@ import { IUsersRepositoryToken, IUsersServiceToken } from '../domain/di.tokens';
       { name: Permission.name, schema: PermissionSchema },
     ]),
   ],
+  controllers: [UsersController],
   providers: [
     { provide: IUsersServiceToken, useClass: UsersService },
     { provide: IUsersRepositoryToken, useClass: UsersRepository },
   ],
-  controllers: [UsersController],
   exports: [{ provide: IUsersServiceToken, useClass: UsersService }],
 })
 export class UsersModule {}

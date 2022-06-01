@@ -1,11 +1,16 @@
 import {
+  Body,
   Controller,
   Get,
   Inject,
   Param,
+  Post,
+  Req,
   UseFilters,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { RequiredPermissions } from '../decorators/required-permissions.decorator';
@@ -29,6 +34,32 @@ export class UsersController {
       UpdateUserDto
     >,
   ) {}
+
+  @Post()
+  @RequiredPermissions(permissions.users.create)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UsePipes(ValidationPipe)
+  @UseInterceptors(MongooseClassSerializerInterceptor(User))
+  @UseFilters(MongoExceptionFilter)
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @Req() req,
+  ): Promise<User> {
+    return await this.usersService.create({
+      ...createUserDto,
+      createdBy: req.user,
+      updatedBy: req.user,
+    } as CreateUserDto);
+  }
+
+  @Get()
+  @RequiredPermissions(permissions.users.read)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UseInterceptors(MongooseClassSerializerInterceptor(User))
+  @UseFilters(MongoExceptionFilter)
+  async findAll(): Promise<User[]> {
+    return await this.usersService.findAll();
+  }
 
   @Get(':id')
   @RequiredPermissions(permissions.users.read)

@@ -13,6 +13,8 @@ export const mockUser = (
   email = 'test@test.com',
   password = '$2a$12$Auh07fMDArugiTWO69rSAuO1NZ0aLqoX85cITUy7JsEUN5Fwxj6Eu',
   role: Role = new Role(),
+  createdBy: User = new User(),
+  updatedBy: User = new User(),
 ): User => ({
   _id,
   firstName,
@@ -21,6 +23,8 @@ export const mockUser = (
   email,
   password,
   role,
+  createdBy,
+  updatedBy,
 });
 
 export const mockLoginResponse = (): {
