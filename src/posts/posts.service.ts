@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
-import { IPostsService } from './interfaces/posts-service.interface';
 import { FilterQuery } from 'mongoose';
 import { IPostsRepository } from './interfaces/posts-repository.interface';
 import { IPostsRepositoryToken } from '../domain/di.tokens';
+import { IPostsService } from './interfaces/posts-service.interface';
 
 @Injectable()
 export class PostsService
