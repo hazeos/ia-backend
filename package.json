@@ -83,6 +83,7 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "setupFiles": ["./jest/setup.jest.ts"],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

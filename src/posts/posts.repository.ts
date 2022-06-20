@@ -13,7 +13,10 @@ export class PostsRepository
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
   async create(createDto: CreatePostDto): Promise<Post> {
-    return await this.postModel.create(createDto);
+    return (await this.postModel.create(createDto)).populate({
+      path: 'files createdBy updatedBy',
+      populate: { path: 'createdBy updatedBy' },
+    });
   }
 
   async findAll(): Promise<Post[]> {
