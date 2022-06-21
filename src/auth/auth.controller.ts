@@ -6,6 +6,7 @@ import {
   Get,
   UseInterceptors,
   Body,
+  HttpCode,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
@@ -21,6 +22,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
+  @HttpCode(200)
   @UseGuards(LocalAuthGuard)
   async login(@Request() req): Promise<object> {
     return this.authService.login(req.user);
