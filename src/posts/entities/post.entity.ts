@@ -10,7 +10,6 @@ export type PostDocument = Post & Document;
 @Schema({ timestamps: true })
 export class Post {
   @Transform((value) => value.obj._id.toString())
-  @Expose({ groups: [Roles.ADMINISTRATOR] })
   _id: string;
 
   @Prop({ type: SchemaTypes.String })

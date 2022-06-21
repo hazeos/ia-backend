@@ -55,6 +55,10 @@ export class PostsRepository
   async update(id: string, updateDto: UpdatePostDto): Promise<Post> {
     return await this.postModel
       .findByIdAndUpdate(id, updateDto, { new: true })
+      .populate({
+        path: 'files',
+        populate: { path: 'createdBy updatedBy' },
+      })
       .populate('createdBy updatedBy')
       .exec();
   }
