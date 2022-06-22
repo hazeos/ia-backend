@@ -36,6 +36,7 @@
     "class-validator": "^0.13.2",
     "cross-env": "^7.0.3",
     "mongoose": "^6.2.8",
+    "nestjs-i18n": "^9.1.2",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -83,7 +84,9 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "setupFiles": ["./jest/setup.jest.ts"],
+    "setupFiles": [
+      "./jest/setup.jest.ts"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

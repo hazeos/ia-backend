@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { FilesModule } from './files/files.module';
+import { join } from 'path';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 
 const env = process.env.NODE_ENV;
 
@@ -19,6 +21,14 @@ const env = process.env.NODE_ENV;
         uri: configService.get<string>('MONGO_CONNECTION_STRING'),
       }),
       inject: [ConfigService],
+    }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en-US',
+      loaderOptions: {
+        path: join(__dirname, '/i18n/'),
+        watch: env === 'development',
+      },
+      resolvers: [AcceptLanguageResolver],
     }),
     UsersModule,
     AuthModule,

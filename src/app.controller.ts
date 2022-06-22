@@ -9,4 +9,9 @@ export class AppController {
   getHello(): { message: string } {
     return this.appService.getHello();
   }
+
+  @Get('supported-languages')
+  getSupportedLanguages(): { languages: string[] } {
+    return this.appService.getSupportedLanguages();
+  }
 }

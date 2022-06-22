@@ -1,10 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { I18nRequestScopeService, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AppService {
+  constructor(
+    private readonly i18nRequestScopeService: I18nRequestScopeService,
+    private readonly i18nService: I18nService,
+  ) {}
   getHello(): { message: string } {
     return {
-      message: 'Hello World!',
+      message: this.i18nRequestScopeService.t('errors.HELLO'),
+    };
+  }
+
+  getSupportedLanguages(): { languages: string[] } {
+    return {
+      languages: this.i18nService.getSupportedLanguages(),
     };
   }
 }
