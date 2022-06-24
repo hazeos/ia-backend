@@ -1,5 +1,9 @@
-export const IPostsServiceToken = Symbol('IPostsServiceToken');
-export const IPostsRepositoryToken = Symbol('IPostsRepositoryToken');
+export const PostsServiceToken = Symbol('PostsServiceToken');
+export const PostsRepositoryToken = Symbol('PostsRepositoryToken');
 
-export const IUsersServiceToken = Symbol('IUsersServiceToken');
-export const IUsersRepositoryToken = Symbol('IUsersRepositoryToken');
+export const UsersServiceToken = Symbol('UsersServiceToken');
+export const UsersRepositoryToken = Symbol('UsersRepositoryToken');
+
+export const IsEmailAlreadyExistConstraintToken = Symbol(
+  'IsEmailAlreadyExistConstraintToken',
+);

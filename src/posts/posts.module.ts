@@ -4,7 +4,7 @@ import { PostsController } from './posts.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Post, PostSchema } from './entities/post.entity';
 import { PostsRepository } from './posts.repository';
-import { IPostsRepositoryToken, IPostsServiceToken } from '../domain/di.tokens';
+import { PostsRepositoryToken, PostsServiceToken } from '../domain/di.tokens';
 
 @Module({
   imports: [
@@ -12,9 +12,9 @@ import { IPostsRepositoryToken, IPostsServiceToken } from '../domain/di.tokens';
   ],
   controllers: [PostsController],
   providers: [
-    { provide: IPostsServiceToken, useClass: PostsService },
-    { provide: IPostsRepositoryToken, useClass: PostsRepository },
+    { provide: PostsServiceToken, useClass: PostsService },
+    { provide: PostsRepositoryToken, useClass: PostsRepository },
   ],
-  exports: [{ provide: IPostsServiceToken, useClass: PostsService }],
+  exports: [{ provide: PostsServiceToken, useClass: PostsService }],
 })
 export class PostsModule {}

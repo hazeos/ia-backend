@@ -18,7 +18,7 @@ import { permissions } from '../shared/constants/permissions.constant';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
-import { IUsersServiceToken } from '../domain/di.tokens';
+import { UsersServiceToken } from '../domain/di.tokens';
 import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,7 +27,7 @@ import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filte
 @Controller('users')
 export class UsersController {
   constructor(
-    @Inject(IUsersServiceToken)
+    @Inject(UsersServiceToken)
     private readonly usersService: IUsersService<
       User,
       CreateUserDto,

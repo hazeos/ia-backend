@@ -8,7 +8,7 @@ import {
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 import { File } from '../../files/entities/file.entity';
-import { IPostsServiceToken } from '../../domain/di.tokens';
+import { PostsServiceToken } from '../../domain/di.tokens';
 
 describe('PostsController', () => {
   let postsController: PostsController;
@@ -19,7 +19,7 @@ describe('PostsController', () => {
       controllers: [PostsController],
       providers: [
         {
-          provide: IPostsServiceToken,
+          provide: PostsServiceToken,
           useValue: {
             create: jest.fn().mockResolvedValue(mockPost()),
             findAll: jest.fn(),
@@ -33,7 +33,7 @@ describe('PostsController', () => {
     }).compile();
 
     postsController = module.get<PostsController>(PostsController);
-    postsService = module.get<PostsService>(IPostsServiceToken);
+    postsService = module.get<PostsService>(PostsServiceToken);
   });
 
   it('Dependencies should be defined', () => {

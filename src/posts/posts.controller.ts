@@ -24,14 +24,14 @@ import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
 import { IPostsService } from './interfaces/posts-service.interface';
-import { IPostsServiceToken } from '../domain/di.tokens';
+import { PostsServiceToken } from '../domain/di.tokens';
 
 @Controller('posts')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
 export class PostsController {
   constructor(
-    @Inject(IPostsServiceToken)
+    @Inject(PostsServiceToken)
     private readonly postsService: IPostsService<
       TPost,
       CreatePostDto,

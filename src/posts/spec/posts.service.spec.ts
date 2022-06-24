@@ -8,7 +8,7 @@ import {
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 import { PostsRepository } from '../posts.repository';
-import { IPostsRepositoryToken } from '../../domain/di.tokens';
+import { PostsRepositoryToken } from '../../domain/di.tokens';
 
 describe('PostsService', () => {
   let postsService: PostsService;
@@ -19,7 +19,7 @@ describe('PostsService', () => {
       providers: [
         PostsService,
         {
-          provide: IPostsRepositoryToken,
+          provide: PostsRepositoryToken,
           useValue: {
             create: jest.fn().mockResolvedValue(mockPost()),
             findAll: jest.fn(),
@@ -33,7 +33,7 @@ describe('PostsService', () => {
     }).compile();
 
     postsService = module.get<PostsService>(PostsService);
-    postsRepository = module.get<PostsRepository>(IPostsRepositoryToken);
+    postsRepository = module.get<PostsRepository>(PostsRepositoryToken);
   });
 
   afterEach(() => {

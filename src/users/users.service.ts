@@ -4,7 +4,7 @@ import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterQuery } from 'mongoose';
-import { IUsersRepositoryToken } from '../domain/di.tokens';
+import { UsersRepositoryToken } from '../domain/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class UsersService
   implements IUsersService<User, CreateUserDto, UpdateUserDto>
 {
   constructor(
-    @Inject(IUsersRepositoryToken)
+    @Inject(UsersRepositoryToken)
     private readonly usersRepository: IUsersRepository<
       User,
       CreateUserDto,

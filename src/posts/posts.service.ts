@@ -4,7 +4,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 import { FilterQuery } from 'mongoose';
 import { IPostsRepository } from './interfaces/posts-repository.interface';
-import { IPostsRepositoryToken } from '../domain/di.tokens';
+import { PostsRepositoryToken } from '../domain/di.tokens';
 import { IPostsService } from './interfaces/posts-service.interface';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class PostsService
   implements IPostsService<Post, CreatePostDto, UpdatePostDto>
 {
   constructor(
-    @Inject(IPostsRepositoryToken)
+    @Inject(PostsRepositoryToken)
     private readonly postsRepository: IPostsRepository<
       Post,
       CreatePostDto,

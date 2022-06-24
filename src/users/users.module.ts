@@ -6,7 +6,12 @@ import { UsersController } from './users.controller';
 import { Role, RoleSchema } from '../schemas/role.schema';
 import { Permission, PermissionSchema } from '../schemas/permission.schema';
 import { UsersRepository } from './users.repository';
-import { IUsersRepositoryToken, IUsersServiceToken } from '../domain/di.tokens';
+import {
+  IsEmailAlreadyExistConstraintToken,
+  UsersRepositoryToken,
+  UsersServiceToken,
+} from '../domain/di.tokens';
+import { IsEmailAlreadyExistConstraint } from '../decorators/unique-email.decorator';
 
 @Module({
   imports: [
@@ -18,9 +23,19 @@ import { IUsersRepositoryToken, IUsersServiceToken } from '../domain/di.tokens';
   ],
   controllers: [UsersController],
   providers: [
-    { provide: IUsersServiceToken, useClass: UsersService },
-    { provide: IUsersRepositoryToken, useClass: UsersRepository },
+    { provide: UsersServiceToken, useClass: UsersService },
+    { provide: UsersRepositoryToken, useClass: UsersRepository },
+    {
+      provide: IsEmailAlreadyExistConstraintToken,
+      useClass: IsEmailAlreadyExistConstraint,
+    },
   ],
-  exports: [{ provide: IUsersServiceToken, useClass: UsersService }],
+  exports: [
+    { provide: UsersServiceToken, useClass: UsersService },
+    {
+      provide: IsEmailAlreadyExistConstraintToken,
+      useClass: IsEmailAlreadyExistConstraint,
+    },
+  ],
 })
 export class UsersModule {}

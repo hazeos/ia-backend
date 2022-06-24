@@ -3,7 +3,7 @@ import { compare, hash } from 'bcryptjs';
 import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../schemas/role.schema';
-import { IUsersServiceToken } from '../domain/di.tokens';
+import { UsersServiceToken } from '../domain/di.tokens';
 import { IUsersService } from '../users/interfaces/users-service.interface';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UpdateUserDto } from '../users/dto/update-user.dto';
@@ -11,7 +11,7 @@ import { UpdateUserDto } from '../users/dto/update-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(IUsersServiceToken)
+    @Inject(UsersServiceToken)
     private readonly usersService: IUsersService<
       User,
       CreateUserDto,
