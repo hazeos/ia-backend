@@ -23,6 +23,8 @@ import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
+import { UserExistsGuard } from './guards/user-exists.guard';
+import { UserExistsExceptionFilter } from './exceptions/user-exists.exception';
 
 @Controller('users')
 export class UsersController {
@@ -37,10 +39,10 @@ export class UsersController {
 
   @Post()
   @RequiredPermissions(permissions.users.create)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard, UserExistsGuard)
   @UsePipes(ValidationPipe)
   @UseInterceptors(MongooseClassSerializerInterceptor(User))
-  @UseFilters(MongoExceptionFilter)
+  @UseFilters(UserExistsExceptionFilter, MongoExceptionFilter)
   async create(
     @Body() createUserDto: CreateUserDto,
     @Req() req,

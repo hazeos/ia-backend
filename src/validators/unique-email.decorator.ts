@@ -13,6 +13,8 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { ClassConstructor } from 'class-transformer';
 
+// Не работает из-за того что не инжектится сервис
+
 export const IsEmailAlreadyExist = <T>(
   type: ClassConstructor<T>,
   property: (o: T) => string | number,
@@ -34,7 +36,7 @@ export const IsEmailAlreadyExist = <T>(
 export class IsEmailAlreadyExistConstraint
   implements ValidatorConstraintInterface
 {
-  // TODO Инъекция сервиса не работает, следовательно валидатор тоже
+  // Инъекция сервиса не работает, следовательно валидатор тоже
   constructor(
     @Inject(UsersServiceToken)
     protected readonly usersService: IUsersService<

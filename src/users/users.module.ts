@@ -6,12 +6,7 @@ import { UsersController } from './users.controller';
 import { Role, RoleSchema } from '../schemas/role.schema';
 import { Permission, PermissionSchema } from '../schemas/permission.schema';
 import { UsersRepository } from './users.repository';
-import {
-  IsEmailAlreadyExistConstraintToken,
-  UsersRepositoryToken,
-  UsersServiceToken,
-} from '../domain/di.tokens';
-import { IsEmailAlreadyExistConstraint } from '../decorators/unique-email.decorator';
+import { UsersRepositoryToken, UsersServiceToken } from '../domain/di.tokens';
 
 @Module({
   imports: [
@@ -25,17 +20,7 @@ import { IsEmailAlreadyExistConstraint } from '../decorators/unique-email.decora
   providers: [
     { provide: UsersServiceToken, useClass: UsersService },
     { provide: UsersRepositoryToken, useClass: UsersRepository },
-    {
-      provide: IsEmailAlreadyExistConstraintToken,
-      useClass: IsEmailAlreadyExistConstraint,
-    },
   ],
-  exports: [
-    { provide: UsersServiceToken, useClass: UsersService },
-    {
-      provide: IsEmailAlreadyExistConstraintToken,
-      useClass: IsEmailAlreadyExistConstraint,
-    },
-  ],
+  exports: [{ provide: UsersServiceToken, useClass: UsersService }],
 })
 export class UsersModule {}

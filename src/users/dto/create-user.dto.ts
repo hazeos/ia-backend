@@ -1,7 +1,6 @@
-import { Match } from '../../decorators/match.decorator';
+import { Match } from '../../validators/match.decorator';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
-import { IsEmailAlreadyExist } from '../../decorators/unique-email.decorator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -18,7 +17,6 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @IsEmailAlreadyExist(CreateUserDto, (s) => s.email)
   email: string;
 
   @IsNotEmpty()
