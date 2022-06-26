@@ -10,7 +10,7 @@ import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
 
 export class UserExistsException extends HttpException {
   constructor() {
-    super('', HttpStatus.INTERNAL_SERVER_ERROR);
+    super('Bad Request', HttpStatus.BAD_REQUEST);
   }
 }
 
@@ -27,6 +27,7 @@ export class UserExistsExceptionFilter implements ExceptionFilter {
       message: i18n.t('errors.EMAIL_EXISTS', {
         args: { email: request.body.email },
       }),
+      error: exception.getResponse(),
     });
   }
 }

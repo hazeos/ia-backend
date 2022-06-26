@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
+  Patch,
   Post,
   Req,
   UseFilters,
@@ -70,5 +72,30 @@ export class UsersController {
   @UseFilters(MongoExceptionFilter)
   async findOneById(@Param('id') id: string): Promise<User> {
     return await this.usersService.findOneById(id);
+  }
+
+  @Patch(':id')
+  @RequiredPermissions(permissions.users.update)
+  @UseGuards(JwtAuthGuard, PermissionsGuard, UserExistsGuard)
+  @UsePipes(ValidationPipe)
+  @UseFilters(UserExistsExceptionFilter, MongoExceptionFilter)
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req,
+  ): Promise<User> {
+    return await this.usersService.update(id, {
+      ...updateUserDto,
+      updatedBy: req.user,
+    } as UpdateUserDto);
+  }
+
+  @Delete(':id')
+  @RequiredPermissions(permissions.users.delete)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UsePipes(ValidationPipe)
+  @UseFilters(MongoExceptionFilter)
+  async remove(@Param('id') id: string): Promise<User> {
+    return await this.usersService.remove(id);
   }
 }

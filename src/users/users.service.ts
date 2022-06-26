@@ -6,6 +6,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterQuery } from 'mongoose';
 import { UsersRepositoryToken } from '../domain/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
+import { hash } from 'bcryptjs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService
@@ -18,9 +20,14 @@ export class UsersService
       CreateUserDto,
       UpdateUserDto
     >,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createDto: CreateUserDto): Promise<User> {
+    createDto.password = await hash(
+      createDto.password,
+      +this.configService.get<number>('SALT_LENGTH'),
+    );
     return await this.usersRepository.create(createDto);
   }
 
@@ -36,15 +43,11 @@ export class UsersService
     return await this.usersRepository.findOneById(id);
   }
 
-  async findOneByEmail(email: string): Promise<User> {
-    return await this.usersRepository.findOne({ email: email });
-  }
-
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {
-    return Promise.resolve(undefined);
+    return await this.usersRepository.update(id, updateDto);
   }
 
   async remove(id: string): Promise<User> {
-    return Promise.resolve(undefined);
+    return await this.usersRepository.remove(id);
   }
 }

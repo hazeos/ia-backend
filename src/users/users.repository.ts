@@ -12,7 +12,9 @@ export class UsersRepository
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(createDto: CreateUserDto): Promise<User> {
-    return await this.userModel.create(createDto);
+    return (await this.userModel.create(createDto)).populate({
+      path: 'role createdBy updatedBy',
+    });
   }
 
   async findAll(): Promise<User[]> {
@@ -54,10 +56,13 @@ export class UsersRepository
   }
 
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {
-    return Promise.resolve(undefined);
+    return await this.userModel
+      .findByIdAndUpdate(id, updateDto, { new: true })
+      .populate('role createdBy updatedBy')
+      .exec();
   }
 
   async remove(id: string): Promise<User> {
-    return Promise.resolve(undefined);
+    return await this.userModel.findByIdAndDelete(id).exec();
   }
 }

@@ -53,7 +53,6 @@ export class AuthService {
   }
 
   async hash(value: string): Promise<string> {
-    console.log(await compare('password', await hash(value, 12)));
     return await hash(value, 12);
   }
 }

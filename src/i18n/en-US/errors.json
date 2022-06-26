@@ -1,5 +1,6 @@
 {
   "HELLO": "Hello, world!",
   "ENGLISH": "English",
-  "EMAIL_EXISTS": "User with {email} already exists"
+  "EMAIL_EXISTS": "User with {email} already exists",
+  "PASSWORDS_NOT_EQUAL": "Passwords are not equal"
 }

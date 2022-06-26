@@ -1,6 +1,7 @@
 import { Match } from '../../validators/match.decorator';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -24,7 +25,7 @@ export class CreateUserDto {
   password: string;
 
   @Match(CreateUserDto, (s) => s.password, {
-    message: 'Passwords are not equal',
+    message: i18nValidationMessage('errors.PASSWORDS_NOT_EQUAL'),
   })
   repeatPassword: string;
 

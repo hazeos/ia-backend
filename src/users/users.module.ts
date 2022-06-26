@@ -7,6 +7,7 @@ import { Role, RoleSchema } from '../schemas/role.schema';
 import { Permission, PermissionSchema } from '../schemas/permission.schema';
 import { UsersRepository } from './users.repository';
 import { UsersRepositoryToken, UsersServiceToken } from '../domain/di.tokens';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersRepositoryToken, UsersServiceToken } from '../domain/di.tokens';
       { name: Role.name, schema: RoleSchema },
       { name: Permission.name, schema: PermissionSchema },
     ]),
+    ConfigModule,
   ],
   controllers: [UsersController],
   providers: [
