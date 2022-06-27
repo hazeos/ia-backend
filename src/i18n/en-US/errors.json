@@ -2,5 +2,5 @@
   "HELLO": "Hello, world!",
   "ENGLISH": "English",
   "EMAIL_EXISTS": "User with {email} already exists",
-  "PASSWORDS_NOT_EQUAL": "Passwords are not equal"
+  "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal"
 }

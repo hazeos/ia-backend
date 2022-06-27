@@ -2,5 +2,5 @@
   "HELLO": "Привет, мир!",
   "ENGLISH": "ИНГЛИШ",
   "EMAIL_EXISTS": "Пользователь с почтой {email} уже существует",
-  "PASSWORDS_NOT_EQUAL": "Пароли не совпадают"
+  "PASSWORDS_DO_NOT_MATCH": "Пароли не совпадают"
 }

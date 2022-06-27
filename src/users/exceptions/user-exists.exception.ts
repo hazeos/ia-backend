@@ -24,10 +24,12 @@ export class UserExistsExceptionFilter implements ExceptionFilter {
     const statusCode = exception.getStatus();
     response.status(statusCode).json({
       statusCode: statusCode,
-      message: i18n.t('errors.EMAIL_EXISTS', {
-        args: { email: request.body.email },
-      }),
-      error: exception.getResponse(),
+      message: exception.getResponse(),
+      errors: [
+        i18n.t('errors.EMAIL_EXISTS', {
+          args: { email: request.body.email },
+        }),
+      ],
     });
   }
 }

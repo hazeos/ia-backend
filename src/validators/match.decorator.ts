@@ -23,7 +23,7 @@ export const Match = <T>(
   };
 };
 
-@ValidatorConstraint({ name: 'Match' })
+@ValidatorConstraint({ name: 'match' })
 export class MatchConstraint implements ValidatorConstraintInterface {
   validate(value: string | number, args: ValidationArguments): boolean {
     const [fn] = args.constraints;

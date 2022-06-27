@@ -20,6 +20,9 @@ export class MongoExceptionFilter implements ExceptionFilter {
           path: request.url,
         });
         break;
+      default:
+        console.error(`${exception.code} ${exception.message}`);
+        break;
     }
   }
 }

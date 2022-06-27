@@ -25,7 +25,7 @@ export class CreateUserDto {
   password: string;
 
   @Match(CreateUserDto, (s) => s.password, {
-    message: i18nValidationMessage('errors.PASSWORDS_NOT_EQUAL'),
+    message: i18nValidationMessage('errors.PASSWORDS_DO_NOT_MATCH'),
   })
   repeatPassword: string;
 
