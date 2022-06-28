@@ -1,21 +1,22 @@
 import {
-  CanActivate,
-  ExecutionContext,
-  Inject,
+  PipeTransform,
   Injectable,
+  ArgumentMetadata,
+  Inject,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { User } from '../entities/user.entity';
 import { UsersServiceToken } from '../../domain/di.tokens';
 import { IUsersService } from '../interfaces/users-service.interface';
+import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserExistsException } from '../exceptions/user-exists.exception';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
-export class UserExistsGuard implements CanActivate {
+export class UserExistsValidationPipe<T>
+  implements PipeTransform<T, Promise<void>>
+{
   constructor(
-    private readonly reflector: Reflector,
     @Inject(UsersServiceToken)
     private readonly usersService: IUsersService<
       User,
@@ -23,13 +24,11 @@ export class UserExistsGuard implements CanActivate {
       UpdateUserDto
     >,
   ) {}
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const user = await this.usersService.findOne({ email: request.body.email });
+  async transform(value: T, metadata: ArgumentMetadata): Promise<void> {
+    const object = plainToInstance(metadata.metatype, value);
+    const user = await this.usersService.findOne({ email: object.email });
     if (user) {
       throw new UserExistsException();
     }
-    return !user;
   }
 }

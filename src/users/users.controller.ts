@@ -25,12 +25,12 @@ import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
-import { UserExistsGuard } from './guards/user-exists.guard';
 import { UserExistsExceptionFilter } from './exceptions/user-exists.exception';
 import {
   i18nValidationErrorFactory,
   I18nValidationExceptionFilter,
 } from 'nestjs-i18n';
+import { UserExistsValidationPipe } from './pipes/user-exists.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -45,11 +45,12 @@ export class UsersController {
 
   @Post()
   @RequiredPermissions(permissions.users.create)
-  @UseGuards(JwtAuthGuard, PermissionsGuard, UserExistsGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @UseInterceptors(MongooseClassSerializerInterceptor(User))
   @UsePipes(
+    UserExistsValidationPipe,
     new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
   )
-  @UseInterceptors(MongooseClassSerializerInterceptor(User))
   @UseFilters(
     UserExistsExceptionFilter,
     MongoExceptionFilter,
@@ -86,8 +87,9 @@ export class UsersController {
 
   @Patch(':id')
   @RequiredPermissions(permissions.users.update)
-  @UseGuards(JwtAuthGuard, PermissionsGuard, UserExistsGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UsePipes(
+    UserExistsValidationPipe,
     new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
   )
   @UseFilters(
