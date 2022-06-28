@@ -1,0 +1,4 @@
+{
+  "EMAIL_EXISTS": "User with {email} already exists",
+  "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal"
+}

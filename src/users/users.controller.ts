@@ -25,14 +25,17 @@ import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
-import { UserExistsExceptionFilter } from './exceptions/user-exists.exception';
+import { UserExistsExceptionFilter } from './exceptions/user-exists.filter';
 import {
   i18nValidationErrorFactory,
   I18nValidationExceptionFilter,
 } from 'nestjs-i18n';
 import { UserExistsValidationPipe } from './pipes/user-exists.pipe';
+import { NotFoundExceptionFilter } from '../domain/exceptions/not-found-exception.filter';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard, PermissionsGuard)
+@UseInterceptors(MongooseClassSerializerInterceptor(User))
 export class UsersController {
   constructor(
     @Inject(UsersServiceToken)
@@ -45,10 +48,7 @@ export class UsersController {
 
   @Post()
   @RequiredPermissions(permissions.users.create)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @UseInterceptors(MongooseClassSerializerInterceptor(User))
   @UsePipes(
-    UserExistsValidationPipe,
     new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
   )
   @UseFilters(
@@ -57,7 +57,7 @@ export class UsersController {
     new I18nValidationExceptionFilter({ detailedErrors: false }),
   )
   async create(
-    @Body() createUserDto: CreateUserDto,
+    @Body('', UserExistsValidationPipe) createUserDto: CreateUserDto,
     @Req() req,
   ): Promise<User> {
     return await this.usersService.create({
@@ -69,8 +69,6 @@ export class UsersController {
 
   @Get()
   @RequiredPermissions(permissions.users.read)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @UseInterceptors(MongooseClassSerializerInterceptor(User))
   @UseFilters(MongoExceptionFilter)
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();
@@ -78,18 +76,14 @@ export class UsersController {
 
   @Get(':id')
   @RequiredPermissions(permissions.users.read)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @UseInterceptors(MongooseClassSerializerInterceptor(User))
-  @UseFilters(MongoExceptionFilter)
+  @UseFilters(MongoExceptionFilter, NotFoundExceptionFilter)
   async findOneById(@Param('id') id: string): Promise<User> {
     return await this.usersService.findOneById(id);
   }
 
   @Patch(':id')
   @RequiredPermissions(permissions.users.update)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UsePipes(
-    UserExistsValidationPipe,
     new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
   )
   @UseFilters(
@@ -99,7 +93,7 @@ export class UsersController {
   )
   async update(
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body('', UserExistsValidationPipe) updateUserDto: UpdateUserDto,
     @Req() req,
   ): Promise<User> {
     return await this.usersService.update(id, {
@@ -110,7 +104,6 @@ export class UsersController {
 
   @Delete(':id')
   @RequiredPermissions(permissions.users.delete)
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
   @UseFilters(MongoExceptionFilter)
   async remove(@Param('id') id: string): Promise<User> {
     return await this.usersService.remove(id);

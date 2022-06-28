@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, Types } from 'mongoose';
 import { UsersRepositoryToken } from '../domain/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { hash } from 'bcryptjs';
@@ -40,10 +40,20 @@ export class UsersService
   }
 
   async findOneById(id: string): Promise<User> {
-    return await this.usersRepository.findOneById(id);
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('Incorrect ID');
+    }
+    const user = await this.usersRepository.findOneById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('Incorrect ID');
+    }
     return await this.usersRepository.update(id, updateDto);
   }
 

@@ -2,8 +2,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, Types } from 'mongoose';
-import { NotFoundException } from '@nestjs/common';
+import { FilterQuery, Model } from 'mongoose';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 
 export class UsersRepository
@@ -38,21 +37,13 @@ export class UsersRepository
   }
 
   async findOneById(id: string): Promise<User> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('Incorrect ID');
-    }
-
-    const user = await this.userModel
+    return await this.userModel
       .findById(id)
       .populate({
         path: 'role',
         populate: { path: 'permissions' },
       })
       .exec();
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return user;
   }
 
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {

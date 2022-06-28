@@ -1,6 +1,5 @@
 {
   "HELLO": "Hello, world!",
   "ENGLISH": "English",
-  "EMAIL_EXISTS": "User with {email} already exists",
-  "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal"
+  "INCORRECT_OBJECT_ID": "Incorrect parameter - ObjectID"
 }

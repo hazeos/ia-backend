@@ -2,21 +2,15 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  HttpException,
-  HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
 
-export class UserExistsException extends HttpException {
-  constructor() {
-    super('Bad Request', HttpStatus.BAD_REQUEST);
-  }
-}
-
-@Catch(UserExistsException)
-export class UserExistsExceptionFilter implements ExceptionFilter {
-  catch(exception: UserExistsException, host: ArgumentsHost): void {
+// TODO продумать логику и использовать для всех ресурсов приложения, чтобы везде возвращались корректные тексты ошибок Not Found
+@Catch(NotFoundException)
+export class NotFoundExceptionFilter implements ExceptionFilter {
+  catch(exception: NotFoundException, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
@@ -24,12 +18,8 @@ export class UserExistsExceptionFilter implements ExceptionFilter {
     const statusCode = exception.getStatus();
     response.status(statusCode).json({
       statusCode: statusCode,
-      message: exception.getResponse(),
-      errors: [
-        i18n.t('errors.EMAIL_EXISTS', {
-          args: { email: request.body.email },
-        }),
-      ],
+      message: i18n.t('errors.INCORRECT_OBJECT_ID'),
+      error: '',
     });
   }
 }
