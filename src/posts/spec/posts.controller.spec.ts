@@ -8,7 +8,7 @@ import {
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 import { File } from '../../files/entities/file.entity';
-import { PostsServiceToken } from '../../domain/di.tokens';
+import { PostsServiceToken } from '../../shared/di.tokens';
 
 describe('PostsController', () => {
   let postsController: PostsController;

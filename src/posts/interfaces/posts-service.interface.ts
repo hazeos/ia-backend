@@ -5,7 +5,7 @@ import {
   FindOneById,
   Remove,
   Update,
-} from '../../domain/services/base-service.interface';
+} from '../../shared/services/base-service.interface';
 
 export interface IPostsService<T, createDto, updateDto>
   extends Create<T, createDto>,

@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '../../users/entities/user.entity';
-import { UsersServiceToken } from '../../domain/di.tokens';
+import { UsersServiceToken } from '../../shared/di.tokens';
 import { IUsersService } from '../../users/interfaces/users-service.interface';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { UpdateUserDto } from '../../users/dto/update-user.dto';

@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { MongoError } from 'mongodb';
-import { MongoErrCodes } from '../../shared/constants/enums/mongo-err-code.enum';
+import { MongoErrCodes } from '../constants/enums/mongo-err-code.enum';
 import { Response, Request } from 'express';
 import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
 

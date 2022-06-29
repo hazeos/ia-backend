@@ -12,7 +12,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { User } from '../users/entities/user.entity';
-import { RequiredPermissions } from '../decorators/required-permissions.decorator';
+import { RequiredPermissions } from '../shared/decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from './guards/permissions.guard';
 import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';

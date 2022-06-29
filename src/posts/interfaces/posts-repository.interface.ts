@@ -5,7 +5,7 @@ import {
   FindOneById,
   Remove,
   Update,
-} from '../../domain/repositories/base-repository.interface';
+} from '../../shared/repositories/base-repository.interface';
 
 export interface IPostsRepository<T, createDto, updateDto>
   extends Create<T, createDto>,

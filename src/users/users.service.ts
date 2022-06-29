@@ -9,11 +9,11 @@ import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterQuery, Types } from 'mongoose';
-import { UsersRepositoryToken } from '../domain/di.tokens';
+import { UsersRepositoryToken } from '../shared/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { hash } from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
-import { NotFoundExceptionType } from '../domain/exceptions/exceptions.types';
+import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class UsersService

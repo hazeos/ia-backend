@@ -15,23 +15,23 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { RequiredPermissions } from '../decorators/required-permissions.decorator';
+import { RequiredPermissions } from '../shared/decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
-import { UsersServiceToken } from '../domain/di.tokens';
+import { UsersServiceToken } from '../shared/di.tokens';
 import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
+import { MongoExceptionFilter } from '../shared/exceptions/mongo-exception.filter';
 import { UserExistsExceptionFilter } from './exceptions/user-exists.filter';
 import {
   i18nValidationErrorFactory,
   I18nValidationExceptionFilter,
 } from 'nestjs-i18n';
 import { UserExistsValidationPipe } from './pipes/user-exists.pipe';
-import { NotFoundExceptionFilter } from '../domain/exceptions/not-found-exception.filter';
+import { NotFoundExceptionFilter } from '../shared/exceptions/not-found-exception.filter';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, PermissionsGuard)

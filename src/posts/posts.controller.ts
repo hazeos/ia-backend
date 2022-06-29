@@ -19,12 +19,12 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Post as TPost } from './entities/post.entity';
 import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RequiredPermissions } from '../decorators/required-permissions.decorator';
+import { RequiredPermissions } from '../shared/decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
-import { MongoExceptionFilter } from '../domain/exceptions/mongo-exception.filter';
+import { MongoExceptionFilter } from '../shared/exceptions/mongo-exception.filter';
 import { IPostsService } from './interfaces/posts-service.interface';
-import { PostsServiceToken } from '../domain/di.tokens';
+import { PostsServiceToken } from '../shared/di.tokens';
 
 @Controller('posts')
 @UseGuards(JwtAuthGuard, PermissionsGuard)

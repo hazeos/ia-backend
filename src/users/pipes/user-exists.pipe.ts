@@ -4,7 +4,7 @@ import {
   ArgumentMetadata,
   Inject,
 } from '@nestjs/common';
-import { UsersServiceToken } from '../../domain/di.tokens';
+import { UsersServiceToken } from '../../shared/di.tokens';
 import { IUsersService } from '../interfaces/users-service.interface';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';

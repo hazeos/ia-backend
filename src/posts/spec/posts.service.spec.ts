@@ -8,7 +8,7 @@ import {
   mockUpdatePostDto,
 } from './mocks/posts.mocks';
 import { PostsRepository } from '../posts.repository';
-import { PostsRepositoryToken } from '../../domain/di.tokens';
+import { PostsRepositoryToken } from '../../shared/di.tokens';
 
 describe('PostsService', () => {
   let postsService: PostsService;

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { HttpStatus, NotFoundException } from '@nestjs/common';
-import { NotFoundExceptionType } from '../domain/exceptions/exceptions.types';
+import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
 
 export class UsersRepository
   implements IUsersRepository<User, CreateUserDto, UpdateUserDto>
