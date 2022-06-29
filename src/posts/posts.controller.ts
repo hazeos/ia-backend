@@ -17,7 +17,7 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post as TPost } from './entities/post.entity';
-import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
+import { MongooseClassSerializerInterceptor } from '../shared/interceptors/mongoose-class-serializer.interceptor';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequiredPermissions } from '../shared/decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';

@@ -19,7 +19,7 @@ import { RequiredPermissions } from '../shared/decorators/required-permissions.d
 import { permissions } from '../shared/constants/permissions.constant';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
-import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
+import { MongooseClassSerializerInterceptor } from '../shared/interceptors/mongoose-class-serializer.interceptor';
 import { UsersServiceToken } from '../shared/di.tokens';
 import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';

@@ -4,21 +4,21 @@ import {
   ArgumentMetadata,
   Inject,
 } from '@nestjs/common';
-import { UsersServiceToken } from '../../shared/di.tokens';
-import { IUsersService } from '../interfaces/users-service.interface';
+import { UsersRepositoryToken } from '../../shared/di.tokens';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserExistsException } from '../exceptions/user-exists.filter';
 import { plainToInstance } from 'class-transformer';
+import { IUsersRepository } from '../interfaces/users-repository.interface';
 
 @Injectable()
 export class UserExistsValidationPipe<T>
   implements PipeTransform<T, Promise<T>>
 {
   constructor(
-    @Inject(UsersServiceToken)
-    private readonly usersService: IUsersService<
+    @Inject(UsersRepositoryToken)
+    private readonly usersRepository: IUsersRepository<
       User,
       CreateUserDto,
       UpdateUserDto
@@ -26,7 +26,7 @@ export class UserExistsValidationPipe<T>
   ) {}
   async transform(value: T, metadata: ArgumentMetadata): Promise<T> {
     const object = plainToInstance(metadata.metatype, value);
-    const user = await this.usersService.findOne({ email: object.email });
+    const user = await this.usersRepository.findOne({ email: object.email });
     if (user) {
       throw new UserExistsException();
     }

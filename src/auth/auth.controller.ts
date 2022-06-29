@@ -15,7 +15,7 @@ import { User } from '../users/entities/user.entity';
 import { RequiredPermissions } from '../shared/decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';
 import { PermissionsGuard } from './guards/permissions.guard';
-import { MongooseClassSerializerInterceptor } from '../interceptors/mongoose-class-serializer.interceptor';
+import { MongooseClassSerializerInterceptor } from '../shared/interceptors/mongoose-class-serializer.interceptor';
 
 @Controller('auth')
 export class AuthController {

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
-import { User } from '../users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Injectable()
 export class HidePropertiesInterceptor implements NestInterceptor {

@@ -8,7 +8,7 @@ import {
 import { ClassTransformOptions, plainToInstance } from 'class-transformer';
 import { Document } from 'mongoose';
 import { Observable } from 'rxjs';
-import { User } from '../users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 export const MongooseClassSerializerInterceptor = (
   classToIntercept: Type,

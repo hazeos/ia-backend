@@ -4,8 +4,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { IUsersRepository } from './interfaces/users-repository.interface';
-import { HttpStatus, NotFoundException } from '@nestjs/common';
-import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
 
 export class UsersRepository
   implements IUsersRepository<User, CreateUserDto, UpdateUserDto>
@@ -49,18 +47,10 @@ export class UsersRepository
   }
 
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {
-    const user = await this.userModel
+    return await this.userModel
       .findByIdAndUpdate(id, updateDto, { new: true })
       .populate('role createdBy updatedBy')
       .exec();
-    if (!user) {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        i18nMessageCode: 'errors.USER_NOT_FOUND',
-        i18nErrorTextCode: 'errors.NOT_FOUND',
-      } as NotFoundExceptionType);
-    }
-    return user;
   }
 
   async remove(id: string): Promise<User> {

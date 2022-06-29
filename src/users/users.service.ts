@@ -42,7 +42,15 @@ export class UsersService
   }
 
   async findOne(filter: FilterQuery<User>): Promise<User> {
-    return await this.usersRepository.findOne(filter);
+    const user = await this.usersRepository.findOne(filter);
+    if (!user) {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessageCode: 'errors.USER_NOT_FOUND',
+        i18nErrorTextCode: 'errors.NOT_FOUND',
+      } as NotFoundExceptionType);
+    }
+    return user;
   }
 
   async findOneById(id: string): Promise<User> {
@@ -72,7 +80,21 @@ export class UsersService
         i18nErrorTextCode: 'errors.NOT_FOUND',
       } as NotFoundExceptionType);
     }
-    return await this.usersRepository.update(id, updateDto);
+    if (updateDto.password) {
+      updateDto.password = await hash(
+        updateDto.password,
+        +this.configService.get<number>('SALT_LENGTH'),
+      );
+    }
+    const user = await this.usersRepository.update(id, updateDto);
+    if (!user) {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessageCode: 'errors.USER_NOT_FOUND',
+        i18nErrorTextCode: 'errors.NOT_FOUND',
+      } as NotFoundExceptionType);
+    }
+    return user;
   }
 
   async remove(id: string): Promise<User> {

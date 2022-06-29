@@ -4,15 +4,18 @@ import { UpdatePostDto } from '../../dto/update-post.dto';
 import { File } from '../../../files/entities/file.entity';
 import { Post } from '../../entities/post.entity';
 
+// TODO исправить тесты с link
 export const mockCreatePostDto = (
   header = 'Test',
   text = 'Test',
+  link = 'test-link',
   files = [''],
   createdBy = new User(),
   updatedBy = new User(),
 ): CreatePostDto => ({
   header,
   text,
+  link,
   files,
   createdBy,
   updatedBy,

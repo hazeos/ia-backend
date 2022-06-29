@@ -1,19 +1,33 @@
-import { CreateUserDto } from './create-user.dto';
-import { PickType } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Match } from '../../validators/match.decorator';
 import { i18nValidationMessage } from 'nestjs-i18n';
+import { User } from '../entities/user.entity';
 
 // TODO локализация сообщений об ошибках валидации
-export class UpdateUserDto extends PickType(CreateUserDto, [
-  'firstName',
-  'lastName',
-  'middleName',
-] as const) {
+export class UpdateUserDto {
   @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  firstName: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  lastName: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  middleName: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
   email: string;
 
   @IsOptional()
+  @IsNotEmpty()
+  @IsString()
   password: string;
 
   @IsOptional()
@@ -23,5 +37,9 @@ export class UpdateUserDto extends PickType(CreateUserDto, [
   repeatPassword: string;
 
   @IsOptional()
+  @IsNotEmpty()
+  @IsString()
   role: string;
+
+  updatedBy: User;
 }
