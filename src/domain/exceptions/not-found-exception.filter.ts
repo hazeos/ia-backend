@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
+import { NotFoundExceptionType } from './exceptions.types';
 
-// TODO продумать логику и использовать для всех ресурсов приложения, чтобы везде возвращались корректные тексты ошибок Not Found
 @Catch(NotFoundException)
 export class NotFoundExceptionFilter implements ExceptionFilter {
   catch(exception: NotFoundException, host: ArgumentsHost): void {
@@ -15,11 +15,11 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const i18n = getI18nContextFromArgumentsHost(host);
-    const statusCode = exception.getStatus();
-    response.status(statusCode).json({
-      statusCode: statusCode,
-      message: i18n.t('errors.INCORRECT_OBJECT_ID'),
-      error: '',
+    const error = exception.getResponse() as NotFoundExceptionType;
+    response.status(error.statusCode).json({
+      statusCode: error.statusCode,
+      message: i18n.t(error.i18nMessageCode),
+      error: i18n.t(error.i18nErrorTextCode),
     });
   }
 }

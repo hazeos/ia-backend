@@ -89,6 +89,7 @@ export class UsersController {
   @UseFilters(
     UserExistsExceptionFilter,
     MongoExceptionFilter,
+    NotFoundExceptionFilter,
     new I18nValidationExceptionFilter({ detailedErrors: false }),
   )
   async update(

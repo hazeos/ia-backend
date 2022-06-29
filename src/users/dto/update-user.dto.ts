@@ -4,6 +4,7 @@ import { IsOptional } from 'class-validator';
 import { Match } from '../../validators/match.decorator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
+// TODO локализация сообщений об ошибках валидации
 export class UpdateUserDto extends PickType(CreateUserDto, [
   'firstName',
   'lastName',

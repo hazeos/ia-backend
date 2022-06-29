@@ -1,5 +1,6 @@
 {
   "HELLO": "Привет, мир!",
   "ENGLISH": "ИНГЛИШ",
-  "INCORRECT_OBJECT_ID": "Неверный параметр - ObjectID"
+  "NOT_FOUND": "Не найдено",
+  "USER_NOT_FOUND": "Пользователь не найден"
 }

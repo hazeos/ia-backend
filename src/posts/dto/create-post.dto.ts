@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
 
+// TODO локализация сообщений об ошибках валидации
 export class CreatePostDto {
   @IsNotEmpty()
   @IsString()

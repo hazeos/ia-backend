@@ -1,5 +1,6 @@
 {
   "HELLO": "Hello, world!",
   "ENGLISH": "English",
-  "INCORRECT_OBJECT_ID": "Incorrect parameter - ObjectID"
+  "NOT_FOUND": "Not found",
+  "USER_NOT_FOUND": "User not found"
 }

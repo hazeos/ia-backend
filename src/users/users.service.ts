@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,6 +13,7 @@ import { UsersRepositoryToken } from '../domain/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { hash } from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
+import { NotFoundExceptionType } from '../domain/exceptions/exceptions.types';
 
 @Injectable()
 export class UsersService
@@ -41,18 +47,30 @@ export class UsersService
 
   async findOneById(id: string): Promise<User> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('Incorrect ID');
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessageCode: 'errors.USER_NOT_FOUND',
+        i18nErrorTextCode: 'errors.NOT_FOUND',
+      } as NotFoundExceptionType);
     }
     const user = await this.usersRepository.findOneById(id);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessageCode: 'errors.USER_NOT_FOUND',
+        i18nErrorTextCode: 'errors.NOT_FOUND',
+      } as NotFoundExceptionType);
     }
     return user;
   }
 
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('Incorrect ID');
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessageCode: 'errors.USER_NOT_FOUND',
+        i18nErrorTextCode: 'errors.NOT_FOUND',
+      } as NotFoundExceptionType);
     }
     return await this.usersRepository.update(id, updateDto);
   }

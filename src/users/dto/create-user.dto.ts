@@ -3,6 +3,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
+// TODO локализация сообщений об ошибках валидации
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
