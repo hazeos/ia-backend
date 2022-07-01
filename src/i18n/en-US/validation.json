@@ -1,6 +1,4 @@
 {
-  "EMAIL_EXISTS": "User with {email} already exists",
-  "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal",
   "POSTS": {
     "HEADER_IS_NOT_EMPTY": "Field 'Header' must not be empty",
     "HEADER_IS_STRING": "Field 'Header' must be a string",
@@ -8,5 +6,22 @@
     "TEXT_IS_STRING": "Field 'Text' must be a string",
     "LINK_MATCHES": "Field 'Link' must not be empty and must contain only A-Z chars, dash (-) symbol and digit numbers",
     "FILES_IS_STRING": "Field 'Files' must be a string array"
+  },
+  "USERS": {
+    "FIRST_NAME_IS_NOT_EMPTY": "Field 'First name' must not be empty",
+    "FIRST_NAME_IS_STRING": "Field 'First name' must be a string",
+    "LAST_NAME_IS_NOT_EMPTY": "Field 'Last name' must not be empty",
+    "LAST_NAME_IS_STRING": "Field 'Last name' must be a string",
+    "MIDDLE_NAME_IS_NOT_EMPTY": "Field 'Middle name' must not be empty",
+    "MIDDLE_NAME_IS_STRING": "Field 'Middle name' must be a string",
+    "EMAIL_IS_NOT_EMPTY": "Field 'Email' must not be empty",
+    "EMAIL_IS_STRING": "Field 'Email' must be a string",
+    "EMAIL_IS_EMAIL": "Field 'Email' must be a valid email address",
+    "PASSWORD_IS_NOT_EMPTY": "Field 'Password' must not be empty",
+    "PASSWORD_IS_STRING": "Field 'Password' must be a string",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal",
+    "ROLE_IS_NOT_EMPTY": "Field 'Role' must not be empty",
+    "ROLE_IS_STRING": "Field 'Role' must be a string",
+    "EMAIL_EXISTS": "User with {email} already exists"
   }
 }

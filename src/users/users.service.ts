@@ -8,7 +8,7 @@ import { User } from './entities/user.entity';
 import { IUsersService } from './interfaces/users-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FilterQuery, Types } from 'mongoose';
+import { FilterQuery } from 'mongoose';
 import { UsersRepositoryToken } from '../shared/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { hash } from 'bcryptjs';

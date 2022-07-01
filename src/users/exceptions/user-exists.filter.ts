@@ -26,7 +26,7 @@ export class UserExistsExceptionFilter implements ExceptionFilter {
       statusCode: statusCode,
       message: exception.getResponse(),
       errors: [
-        i18n.t('validation.EMAIL_EXISTS', {
+        i18n.t('validation.USERS.EMAIL_EXISTS', {
           args: { email: request.body.email },
         }),
       ],
