@@ -32,10 +32,12 @@ import {
 } from 'nestjs-i18n';
 import { UserExistsValidationPipe } from './pipes/user-exists.pipe';
 import { NotFoundExceptionFilter } from '../shared/exceptions/not-found-exception.filter';
+import { ObjectIdValidationPipe } from '../shared/pipes/object-id-validation.pipe';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @UseInterceptors(MongooseClassSerializerInterceptor(User))
+@UseFilters(MongoExceptionFilter)
 export class UsersController {
   constructor(
     @Inject(UsersServiceToken)
@@ -53,7 +55,6 @@ export class UsersController {
   )
   @UseFilters(
     UserExistsExceptionFilter,
-    MongoExceptionFilter,
     new I18nValidationExceptionFilter({ detailedErrors: false }),
   )
   async create(
@@ -69,15 +70,16 @@ export class UsersController {
 
   @Get()
   @RequiredPermissions(permissions.users.read)
-  @UseFilters(MongoExceptionFilter)
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
   @Get(':id')
   @RequiredPermissions(permissions.users.read)
-  @UseFilters(MongoExceptionFilter, NotFoundExceptionFilter)
-  async findOneById(@Param('id') id: string): Promise<User> {
+  @UseFilters(NotFoundExceptionFilter)
+  async findOneById(
+    @Param('id', ObjectIdValidationPipe) id: string,
+  ): Promise<User> {
     return await this.usersService.findOneById(id);
   }
 
@@ -88,12 +90,11 @@ export class UsersController {
   )
   @UseFilters(
     UserExistsExceptionFilter,
-    MongoExceptionFilter,
     NotFoundExceptionFilter,
     new I18nValidationExceptionFilter({ detailedErrors: false }),
   )
   async update(
-    @Param('id') id: string,
+    @Param('id', ObjectIdValidationPipe) id: string,
     @Body('', UserExistsValidationPipe) updateUserDto: UpdateUserDto,
     @Req() req,
   ): Promise<User> {
@@ -105,8 +106,8 @@ export class UsersController {
 
   @Delete(':id')
   @RequiredPermissions(permissions.users.delete)
-  @UseFilters(MongoExceptionFilter)
-  async remove(@Param('id') id: string): Promise<User> {
+  @UseFilters(NotFoundExceptionFilter)
+  async remove(@Param('id', ObjectIdValidationPipe) id: string): Promise<User> {
     return await this.usersService.remove(id);
   }
 }

@@ -25,10 +25,17 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { MongoExceptionFilter } from '../shared/exceptions/mongo-exception.filter';
 import { IPostsService } from './interfaces/posts-service.interface';
 import { PostsServiceToken } from '../shared/di.tokens';
+import {
+  i18nValidationErrorFactory,
+  I18nValidationExceptionFilter,
+} from 'nestjs-i18n';
+import { ObjectIdValidationPipe } from '../shared/pipes/object-id-validation.pipe';
+import { NotFoundExceptionFilter } from '../shared/exceptions/not-found-exception.filter';
 
 @Controller('posts')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
+@UseFilters(MongoExceptionFilter)
 export class PostsController {
   constructor(
     @Inject(PostsServiceToken)
@@ -41,8 +48,10 @@ export class PostsController {
 
   @Post()
   @RequiredPermissions(permissions.posts.create)
-  @UsePipes(ValidationPipe)
-  @UseFilters(MongoExceptionFilter)
+  @UsePipes(
+    new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
+  )
+  @UseFilters(new I18nValidationExceptionFilter({ detailedErrors: false }))
   async create(
     @Body() createPostDto: CreatePostDto,
     @Req() req,
@@ -62,16 +71,24 @@ export class PostsController {
 
   @Get(':id')
   @RequiredPermissions(permissions.posts.read)
-  async findOneById(@Param('id') id: string): Promise<TPost> {
+  @UseFilters(NotFoundExceptionFilter)
+  async findOneById(
+    @Param('id', ObjectIdValidationPipe) id: string,
+  ): Promise<TPost> {
     return await this.postsService.findOneById(id);
   }
 
   @Patch(':id')
   @RequiredPermissions(permissions.posts.update)
-  @UsePipes(ValidationPipe)
-  @UseFilters(MongoExceptionFilter)
+  @UsePipes(
+    new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
+  )
+  @UseFilters(
+    NotFoundExceptionFilter,
+    new I18nValidationExceptionFilter({ detailedErrors: false }),
+  )
   async update(
-    @Param('id') id: string,
+    @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
     @Req() req,
   ): Promise<TPost> {
@@ -84,8 +101,10 @@ export class PostsController {
   @Delete(':id')
   @RequiredPermissions(permissions.posts.delete)
   @UsePipes(ValidationPipe)
-  @UseFilters(MongoExceptionFilter)
-  async remove(@Param('id') id: string): Promise<TPost> {
+  @UseFilters(NotFoundExceptionFilter)
+  async remove(
+    @Param('id', ObjectIdValidationPipe) id: string,
+  ): Promise<TPost> {
     return await this.postsService.remove(id);
   }
 }

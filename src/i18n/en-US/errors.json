@@ -1,6 +1,16 @@
 {
   "HELLO": "Hello, world!",
   "ENGLISH": "English",
-  "NOT_FOUND": "Not found",
-  "USER_NOT_FOUND": "User not found"
+  "POSTS": {
+    "POST_NOT_FOUND": "Post not found"
+  },
+  "USERS": {
+    "USER_NOT_FOUND": "User not found"
+  },
+  "HTTP": {
+    "NOT_FOUND": "Not found"
+  },
+  "MONGO": {
+    "INVALID_OBJECT_ID": "That ID does not exist"
+  }
 }

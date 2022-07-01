@@ -18,6 +18,9 @@ export class Post {
   @Prop({ type: SchemaTypes.String })
   text: string;
 
+  @Prop({ type: SchemaTypes.String })
+  link: string;
+
   @Prop([{ type: SchemaTypes.ObjectId, ref: 'File' }])
   @Type(() => File)
   files: File[];

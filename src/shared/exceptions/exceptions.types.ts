@@ -1,5 +1,5 @@
 export type NotFoundExceptionType = {
   statusCode: number;
-  i18nMessageCode: string;
-  i18nErrorTextCode: string;
+  i18nMessage: string;
+  i18nErrorText: string;
 };

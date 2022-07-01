@@ -46,40 +46,26 @@ export class UsersService
     if (!user) {
       throw new NotFoundException({
         statusCode: HttpStatus.NOT_FOUND,
-        i18nMessageCode: 'errors.USER_NOT_FOUND',
-        i18nErrorTextCode: 'errors.NOT_FOUND',
+        i18nMessage: 'errors.USERS.USER_NOT_FOUND',
+        i18nErrorText: 'errors.HTTP.NOT_FOUND',
       } as NotFoundExceptionType);
     }
     return user;
   }
 
   async findOneById(id: string): Promise<User> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        i18nMessageCode: 'errors.USER_NOT_FOUND',
-        i18nErrorTextCode: 'errors.NOT_FOUND',
-      } as NotFoundExceptionType);
-    }
     const user = await this.usersRepository.findOneById(id);
     if (!user) {
       throw new NotFoundException({
         statusCode: HttpStatus.NOT_FOUND,
-        i18nMessageCode: 'errors.USER_NOT_FOUND',
-        i18nErrorTextCode: 'errors.NOT_FOUND',
+        i18nMessage: 'errors.USERS.USER_NOT_FOUND',
+        i18nErrorText: 'errors.HTTP.NOT_FOUND',
       } as NotFoundExceptionType);
     }
     return user;
   }
 
   async update(id: string, updateDto: UpdateUserDto): Promise<User> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        i18nMessageCode: 'errors.USER_NOT_FOUND',
-        i18nErrorTextCode: 'errors.NOT_FOUND',
-      } as NotFoundExceptionType);
-    }
     if (updateDto.password) {
       updateDto.password = await hash(
         updateDto.password,
@@ -90,8 +76,8 @@ export class UsersService
     if (!user) {
       throw new NotFoundException({
         statusCode: HttpStatus.NOT_FOUND,
-        i18nMessageCode: 'errors.USER_NOT_FOUND',
-        i18nErrorTextCode: 'errors.NOT_FOUND',
+        i18nMessage: 'errors.USERS.USER_NOT_FOUND',
+        i18nErrorText: 'errors.HTTP.NOT_FOUND',
       } as NotFoundExceptionType);
     }
     return user;

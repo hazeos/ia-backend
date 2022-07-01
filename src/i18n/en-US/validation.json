@@ -1,4 +1,12 @@
 {
   "EMAIL_EXISTS": "User with {email} already exists",
-  "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal"
+  "PASSWORDS_DO_NOT_MATCH": "Passwords are not equal",
+  "POSTS": {
+    "HEADER_IS_NOT_EMPTY": "Field 'Header' must not be empty",
+    "HEADER_IS_STRING": "Field 'Header' must be a string",
+    "TEXT_IS_NOT_EMPTY": "Field 'Text' must not be empty",
+    "TEXT_IS_STRING": "Field 'Text' must be a string",
+    "LINK_MATCHES": "Field 'Link' must not be empty and must contain only A-Z chars, dash (-) symbol and digit numbers",
+    "FILES_IS_STRING": "Field 'Files' must be a string array"
+  }
 }

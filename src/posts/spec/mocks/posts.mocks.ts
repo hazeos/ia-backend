@@ -24,10 +24,12 @@ export const mockCreatePostDto = (
 export const mockUpdatePostDto = (
   header = 'Test',
   text = 'Test',
+  link = 'test-link',
   files = ['123'],
 ): UpdatePostDto => ({
   header,
   text,
+  link,
   files,
 });
 
@@ -35,6 +37,7 @@ export const mockPost = (
   _id = '1',
   header = 'Test',
   text = 'Test',
+  link = 'test-link',
   files = [new File()],
   createdBy = new User(),
   updatedBy = new User(),
@@ -42,6 +45,7 @@ export const mockPost = (
   _id,
   header,
   text,
+  link,
   files,
   createdBy,
   updatedBy,

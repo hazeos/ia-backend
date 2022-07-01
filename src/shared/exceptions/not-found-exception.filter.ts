@@ -18,8 +18,8 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
     const error = exception.getResponse() as NotFoundExceptionType;
     response.status(error.statusCode).json({
       statusCode: error.statusCode,
-      message: i18n.t(error.i18nMessageCode),
-      error: i18n.t(error.i18nErrorTextCode),
+      message: i18n.t(error.i18nMessage),
+      error: i18n.t(error.i18nErrorText),
     });
   }
 }
