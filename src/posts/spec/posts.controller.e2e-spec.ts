@@ -2,11 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { PostsModule } from '../posts.module';
-import { configTestDb } from '../../../test/e2e.utils';
-import { makeTestToken } from '../../../test/e2e.utils';
+import {
+  configI18n,
+  configTestDb,
+  makeTestToken,
+} from '../../../test/e2e.utils';
 import { AuthModule } from '../../auth/auth.module';
 import { UsersModule } from '../../users/users.module';
 import { FilesModule } from '../../files/files.module';
+import { join } from 'path';
 
 describe('PostsController (e2e)', () => {
   let app: INestApplication;
@@ -44,6 +48,31 @@ describe('PostsController (e2e)', () => {
     updatedAt: expect.any(String),
   };
 
+  const adminResponseBodyExpectation = {
+    header: expect.stringMatching('TEST POST'),
+    text: expect.stringMatching('TEST POST 12345'),
+    files: expect.any(Array),
+    createdBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
+    updatedBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
+    _id: expect.any(String),
+    createdAt: expect.any(String),
+    updatedAt: expect.any(String),
+    __v: expect.any(Number),
+  };
+
+  const moderatorResponseBodyExpectation = {
+    header: expect.stringMatching('MODERATOR TEST POST'),
+    text: expect.stringMatching('MODERATOR TEST POST 12345'),
+    link: expect.stringMatching('moderator-test-link'),
+    files: expect.any(Array),
+    createdBy: expect.objectContaining(moderatorCreatedByAndUpdatedBy),
+    updatedBy: expect.objectContaining(moderatorCreatedByAndUpdatedBy),
+    _id: expect.any(String),
+    createdAt: expect.any(String),
+    updatedAt: expect.any(String),
+    __v: expect.any(Number),
+  };
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
@@ -52,6 +81,7 @@ describe('PostsController (e2e)', () => {
         UsersModule,
         FilesModule,
         PostsModule,
+        ...configI18n(join(process.cwd(), 'src', 'i18n'), 'en-US'),
       ],
     }).compile();
 
@@ -79,23 +109,14 @@ describe('PostsController (e2e)', () => {
           .send({
             header: 'TEST POST',
             text: 'TEST POST 12345',
+            link: 'test-link',
             files: ['614b35be15152843941b6f2f'],
           })
           .expect(201)
           .then((response) => {
             adminPostId = response.body._id;
             adminPostCreatedAt = response.body.createdAt;
-            expect(response.body).toMatchObject({
-              header: expect.stringMatching('TEST POST'),
-              text: expect.stringMatching('TEST POST 12345'),
-              files: expect.any(Array),
-              createdBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
-              updatedBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
-              _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-              __v: expect.any(Number),
-            });
+            expect(response.body).toMatchObject(adminResponseBodyExpectation);
           });
       });
     });
@@ -136,17 +157,7 @@ describe('PostsController (e2e)', () => {
           .auth(adminToken, { type: 'bearer' })
           .expect(200)
           .then((response) => {
-            expect(response.body).toMatchObject({
-              header: expect.stringMatching('TEST POST'),
-              text: expect.stringMatching('TEST POST 12345'),
-              files: expect.any(Array),
-              createdBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
-              updatedBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
-              _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-              __v: expect.any(Number),
-            });
+            expect(response.body).toMatchObject(adminResponseBodyExpectation);
           });
       });
     });
@@ -159,6 +170,7 @@ describe('PostsController (e2e)', () => {
           .send({
             header: 'TEST1234',
             text: 'TEST1234',
+            link: 'test-link1234',
             files: ['620fbe6e4f4163a38de997ee'],
           })
           .expect(200)
@@ -166,6 +178,7 @@ describe('PostsController (e2e)', () => {
             expect(response.body).toMatchObject({
               header: expect.stringMatching('TEST1234'),
               text: expect.stringMatching('TEST1234'),
+              link: expect.stringMatching('test-link1234'),
               files: expect.any(Array),
               createdBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
               updatedBy: expect.objectContaining(adminCreatedByAndUpdatedBy),
@@ -216,27 +229,16 @@ describe('PostsController (e2e)', () => {
           .send({
             header: 'MODERATOR TEST POST',
             text: 'MODERATOR TEST POST 12345',
+            link: 'moderator-test-link',
             files: ['614b35be15152843941b6f2f'],
           })
           .expect(201)
           .then((response) => {
             moderatorPostId = response.body._id;
             moderatorPostCreatedAt = response.body.createdAt;
-            expect(response.body).toMatchObject({
-              header: expect.stringMatching('MODERATOR TEST POST'),
-              text: expect.stringMatching('MODERATOR TEST POST 12345'),
-              files: expect.any(Array),
-              createdBy: expect.objectContaining(
-                moderatorCreatedByAndUpdatedBy,
-              ),
-              updatedBy: expect.objectContaining(
-                moderatorCreatedByAndUpdatedBy,
-              ),
-              _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-              __v: expect.any(Number),
-            });
+            expect(response.body).toMatchObject(
+              moderatorResponseBodyExpectation,
+            );
           });
       });
     });
@@ -277,21 +279,9 @@ describe('PostsController (e2e)', () => {
           .auth(moderatorToken, { type: 'bearer' })
           .expect(200)
           .then((response) => {
-            expect(response.body).toMatchObject({
-              header: expect.stringMatching('MODERATOR TEST POST'),
-              text: expect.stringMatching('MODERATOR TEST POST 12345'),
-              files: expect.any(Array),
-              createdBy: expect.objectContaining(
-                moderatorCreatedByAndUpdatedBy,
-              ),
-              updatedBy: expect.objectContaining(
-                moderatorCreatedByAndUpdatedBy,
-              ),
-              _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-              __v: expect.any(Number),
-            });
+            expect(response.body).toMatchObject(
+              moderatorResponseBodyExpectation,
+            );
           });
       });
     });
@@ -304,6 +294,7 @@ describe('PostsController (e2e)', () => {
           .send({
             header: 'MODERATOR TEST1234',
             text: 'MODERATOR TEST1234',
+            link: 'moderator-test-link-1234',
             files: ['620fbe6e4f4163a38de997ee'],
           })
           .expect(200)
@@ -311,6 +302,7 @@ describe('PostsController (e2e)', () => {
             expect(response.body).toMatchObject({
               header: expect.stringMatching('MODERATOR TEST1234'),
               text: expect.stringMatching('MODERATOR TEST1234'),
+              link: expect.stringMatching('moderator-test-link-1234'),
               files: expect.any(Array),
               createdBy: expect.objectContaining(
                 moderatorCreatedByAndUpdatedBy,
@@ -403,6 +395,7 @@ describe('PostsController (e2e)', () => {
               _id: expect.any(String),
               header: expect.stringMatching('MODERATOR TEST1234'),
               text: expect.stringMatching('MODERATOR TEST1234'),
+              link: expect.stringMatching('moderator-test-link-1234'),
               files: expect.any(Array),
               createdAt: expect.any(String),
               updatedAt: expect.any(String),

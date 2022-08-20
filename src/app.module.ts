@@ -25,7 +25,7 @@ const env = process.env.NODE_ENV;
     I18nModule.forRoot({
       fallbackLanguage: 'en-US',
       loaderOptions: {
-        path: join(__dirname, '/i18n/'),
+        path: join(__dirname, 'i18n'),
         watch: env === 'development',
       },
       resolvers: [AcceptLanguageResolver],

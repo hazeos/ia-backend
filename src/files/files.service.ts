@@ -1,31 +1,76 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { File, FileDocument } from './entities/file.entity';
+import { File } from './entities/file.entity';
+import { IFilesService } from './interfaces/files-service.interface';
+import { FilesRepositoryToken } from '../shared/di.tokens';
+import { IFilesRepository } from './interfaces/files-repository.interface';
+import { FilterQuery } from 'mongoose';
+import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
 
 @Injectable()
-export class FilesService {
-  constructor(@InjectModel(File.name) private fileModel: Model<FileDocument>) {}
+export class FilesService
+  implements IFilesService<File, CreateFileDto, UpdateFileDto>
+{
+  constructor(
+    @Inject(FilesRepositoryToken)
+    private readonly filesRepository: IFilesRepository<
+      File,
+      CreateFileDto,
+      UpdateFileDto
+    >,
+  ) {}
 
-  create(createFileDto: CreateFileDto) {
-    return 'This action adds a new file';
+  async create(createDto: CreateFileDto): Promise<File> {
+    return await this.filesRepository.create(createDto);
   }
 
-  findAll() {
-    return `This action returns all files`;
+  async findAll(): Promise<File[]> {
+    return await this.filesRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} file`;
+  async findOne(filter: FilterQuery<File>): Promise<File> {
+    const file = await this.filesRepository.findOne(filter);
+    if (!file) {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessage: 'errors.FILES.POST_NOT_FOUND',
+        i18nErrorText: 'errors.HTTP.NOT_FOUND',
+      } as NotFoundExceptionType);
+    }
+    return file;
   }
 
-  update(id: number, updateFileDto: UpdateFileDto) {
-    return `This action updates a #${id} file`;
+  async findOneById(id: string): Promise<File> {
+    const file = await this.filesRepository.findOneById(id);
+    if (!file) {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessage: 'errors.FILES.POST_NOT_FOUND',
+        i18nErrorText: 'errors.HTTP.NOT_FOUND',
+      } as NotFoundExceptionType);
+    }
+    return file;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} file`;
+  async update(id: string, updateFileDto: UpdateFileDto): Promise<File> {
+    const file = await this.filesRepository.update(id, updateFileDto);
+    if (!file) {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        i18nMessage: 'errors.FILES.POST_NOT_FOUND',
+        i18nErrorText: 'errors.HTTP.NOT_FOUND',
+      } as NotFoundExceptionType);
+    }
+    return file;
+  }
+
+  async remove(id: string): Promise<File> {
+    return await this.filesRepository.remove(id);
   }
 }

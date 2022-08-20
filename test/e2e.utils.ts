@@ -2,6 +2,7 @@ import { sign } from 'jsonwebtoken';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DynamicModule } from '@nestjs/common';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 
 export const makeTestToken = (
   role: 'admin' | 'moderator' | 'anonymous' | 'guest',
@@ -40,6 +41,21 @@ export const configTestDb = (): DynamicModule[] => {
         uri: configService.get<string>('MONGO_CONNECTION_STRING'),
       }),
       inject: [ConfigService],
+    }),
+  ];
+};
+
+export const configI18n = (
+  path: string,
+  fallbackLanguage: string,
+): DynamicModule[] => {
+  return [
+    I18nModule.forRoot({
+      fallbackLanguage: fallbackLanguage,
+      loaderOptions: {
+        path: path,
+      },
+      resolvers: [AcceptLanguageResolver],
     }),
   ];
 };

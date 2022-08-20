@@ -13,9 +13,7 @@ export class AppService {
     };
   }
 
-  getSupportedLanguages(): { languages: string[] } {
-    return {
-      languages: this.i18nService.getSupportedLanguages(),
-    };
+  getSupportedLanguages(): string[] {
+    return this.i18nService.getSupportedLanguages();
   }
 }

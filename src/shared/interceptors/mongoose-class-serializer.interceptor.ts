@@ -29,7 +29,7 @@ export const MongooseClassSerializerInterceptor = (
     private prepareResponse(
       response: PlainLiteralObject | PlainLiteralObject[],
       options: ClassTransformOptions,
-    ): any {
+    ): PlainLiteralObject[] | PlainLiteralObject {
       if (Array.isArray(response)) {
         return response.map((v) => this.changePlainObjectToClass(v, options));
       }

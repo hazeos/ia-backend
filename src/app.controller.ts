@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('supported-languages')
-  getSupportedLanguages(): { languages: string[] } {
+  getSupportedLanguages(): string[] {
     return this.appService.getSupportedLanguages();
   }
 }
