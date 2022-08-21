@@ -8,7 +8,8 @@
     "USER_NOT_FOUND": "User not found"
   },
   "HTTP": {
-    "NOT_FOUND": "Not found"
+    "NOT_FOUND": "Not found",
+    "BAD_REQUEST": "Bad request"
   },
   "MONGO": {
     "INVALID_OBJECT_ID": "That ID does not exist"

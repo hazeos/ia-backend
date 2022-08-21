@@ -1,7 +1,13 @@
-import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { UnsupportedMimeTypeException } from '../exceptions/file-validation.filter';
+import {
+  ArgumentMetadata,
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  PipeTransform,
+} from '@nestjs/common';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
+import { BadRequestExceptionType } from '../../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class FileMimeTypeValidationPipe implements PipeTransform {
@@ -14,7 +20,23 @@ export class FileMimeTypeValidationPipe implements PipeTransform {
       await unlink(
         join(process.cwd(), process.env.UPLOAD_PATH, value.originalname),
       );
-      throw new UnsupportedMimeTypeException();
+      throw new BadRequestException({
+        statusCode: HttpStatus.BAD_REQUEST,
+        i18nMessage: 'validation.FILES.UNSUPPORTED_MIME_TYPE',
+        i18nArgs: [
+          {
+            key: 'mimeType',
+            pathToValue: 'file.mimetype',
+            valueFrom: 'request',
+          },
+          {
+            key: 'originalName',
+            pathToValue: 'file.originalname',
+            valueFrom: 'request',
+          },
+        ],
+        i18nErrorText: 'errors.HTTP.BAD_REQUEST',
+      } as BadRequestExceptionType);
     }
     return value;
   }

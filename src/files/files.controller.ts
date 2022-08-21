@@ -25,7 +25,6 @@ import {
   i18nValidationErrorFactory,
   I18nValidationExceptionFilter,
 } from 'nestjs-i18n';
-import { FileValidationExceptionFilter } from './exceptions/file-validation.filter';
 import { File } from './entities/file.entity';
 import { FilesServiceToken } from '../shared/di.tokens';
 import { IFilesService } from './interfaces/files-service.interface';
@@ -37,6 +36,8 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { MongooseClassSerializerInterceptor } from '../shared/interceptors/mongoose-class-serializer.interceptor';
 import { MongoExceptionFilter } from '../shared/exceptions/mongo-exception.filter';
 import { realpathSync } from 'fs';
+import { HasFileValidationPipe } from './pipes/has-file-validation.pipe';
+import { BadRequestExceptionFilter } from '../shared/exceptions/bad-request-exception.filter';
 
 @Controller('files')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -59,12 +60,13 @@ export class FilesController {
     new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
   )
   @UseFilters(
-    FileValidationExceptionFilter,
     PayloadTooLargeExceptionFilter,
+    BadRequestExceptionFilter,
     new I18nValidationExceptionFilter({ detailedErrors: false }),
   )
   async create(
-    @UploadedFile(FileMimeTypeValidationPipe) file: Express.Multer.File,
+    @UploadedFile(HasFileValidationPipe, FileMimeTypeValidationPipe)
+    file: Express.Multer.File,
     @Body() createFileDto: CreateFileDto,
     @Req() req,
   ): Promise<File> {
@@ -82,7 +84,7 @@ export class FilesController {
   }
 
   @Get(':id')
-  @RequiredPermissions(permissions.posts.read)
+  @RequiredPermissions(permissions.files.read)
   @UseFilters(NotFoundExceptionFilter)
   async findOneById(
     @Param('id', ObjectIdValidationPipe) id: string,
@@ -91,15 +93,19 @@ export class FilesController {
   }
 
   @Patch(':id')
+  @RequiredPermissions(permissions.files.update)
+  @UseFilters(NotFoundExceptionFilter)
   async update(
-    @Param('id') id: string,
+    @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateFileDto: UpdateFileDto,
   ): Promise<File> {
     return await this.filesService.update(id, updateFileDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<File> {
+  @RequiredPermissions(permissions.files.delete)
+  @UseFilters(NotFoundExceptionFilter)
+  async remove(@Param('id', ObjectIdValidationPipe) id: string): Promise<File> {
     return await this.filesService.remove(id);
   }
 }

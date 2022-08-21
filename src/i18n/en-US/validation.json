@@ -25,8 +25,9 @@
     "EMAIL_EXISTS": "User with {email} already exists"
   },
   "FILES": {
+    "NO_FILE": "Attach a file",
     "TOO_LARGE": "File size can't be more than {size} MB",
-    "UNSUPPORTED_MIME_TYPE": "Provided file's mime type ({mimeType}) isn't supported",
+    "UNSUPPORTED_MIME_TYPE": "Mime type ({0.mimeType}) of provided file ({1.originalName}) isn't supported",
     "NAME_IS_STRING": "Field 'Name' must be a string",
     "NAME_IS_NOT_EMPTY": "Field 'Name' must not be empty"
   }
