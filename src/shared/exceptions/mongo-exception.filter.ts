@@ -15,9 +15,8 @@ export class MongoExceptionFilter implements ExceptionFilter {
       case MongoErrCodes.DUPLICATE_KEY:
         response.status(500).json({
           statusCode: 500,
-          timestamp: new Date().toISOString(),
-          message: i18n.t('errors.ENGLISH'),
-          path: request.url,
+          message: exception.message,
+          error: i18n.t('errors.MONGO.DUPLICATE_KEY'),
         });
         break;
       default:

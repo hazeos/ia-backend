@@ -17,22 +17,34 @@ export class FilesRepository
   }
 
   async findAll(): Promise<File[]> {
-    return Promise.resolve([]);
+    return await this.fileModel
+      .find()
+      .populate({ path: 'createdBy updatedBy' })
+      .exec();
   }
 
   async findOne(): Promise<File> {
-    return Promise.resolve(undefined);
+    return await this.fileModel
+      .findOne()
+      .populate({ path: 'createdBy updatedBy' })
+      .exec();
   }
 
   async findOneById(id: string): Promise<File> {
-    return Promise.resolve(undefined);
-  }
-
-  async remove(id: string): Promise<File> {
-    return Promise.resolve(undefined);
+    return await this.fileModel
+      .findById(id)
+      .populate({ path: 'createdBy updatedBy' })
+      .exec();
   }
 
   async update(id: string, updateDto: UpdateFileDto): Promise<File> {
-    return Promise.resolve(undefined);
+    return await this.fileModel
+      .findByIdAndUpdate(id, updateDto, { new: true })
+      .populate('createdBy updatedBy')
+      .exec();
+  }
+
+  async remove(id: string): Promise<File> {
+    return await this.fileModel.findByIdAndDelete(id).exec();
   }
 }

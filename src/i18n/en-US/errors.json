@@ -9,9 +9,12 @@
   },
   "HTTP": {
     "NOT_FOUND": "Not found",
-    "BAD_REQUEST": "Bad request"
+    "BAD_REQUEST": "Bad request",
+    "UNAUTHORIZED": "Unauthorized",
+    "FORBIDDEN": "Forbidden"
   },
   "MONGO": {
-    "INVALID_OBJECT_ID": "That ID does not exist"
+    "INVALID_OBJECT_ID": "That ID does not exist",
+    "DUPLICATE_KEY": "That key already exists"
   }
 }

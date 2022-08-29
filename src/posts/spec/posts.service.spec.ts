@@ -40,7 +40,7 @@ describe('PostsService', () => {
     jest.clearAllMocks();
   });
 
-  it('Dependencies should be defined', () => {
+  it('dependencies should be defined', () => {
     expect(postsService).toBeDefined();
     expect(postsRepository).toBeDefined();
   });

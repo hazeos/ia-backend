@@ -25,7 +25,7 @@ describe('UsersController', () => {
     usersService = module.get<UsersService>(UsersService);
   });
 
-  it('Dependencies should be defined', () => {
+  it('dependencies should be defined', () => {
     expect(usersController).toBeDefined();
     expect(usersService).toBeDefined();
   });

@@ -34,7 +34,7 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
       message: i18n.t(error.i18nMessage, {
         args: args,
       }),
-      errors: [i18n.t(error.i18nErrorText)],
+      error: i18n.t(error.i18nErrorText),
     });
   }
 }

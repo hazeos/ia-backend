@@ -19,7 +19,7 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
     response.status(error.statusCode).json({
       statusCode: error.statusCode,
       message: i18n.t(error.i18nMessage),
-      errors: [i18n.t(error.i18nErrorText)],
+      error: i18n.t(error.i18nErrorText),
     });
   }
 }

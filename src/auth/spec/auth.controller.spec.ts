@@ -34,7 +34,7 @@ describe('AuthController', () => {
     jest.clearAllMocks();
   });
 
-  it('Dependencies should be defined', () => {
+  it('dependencies should be defined', () => {
     expect(authController).toBeDefined();
     expect(authService).toBeDefined();
   });

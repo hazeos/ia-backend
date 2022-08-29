@@ -4,7 +4,6 @@ import { UpdatePostDto } from '../../dto/update-post.dto';
 import { File } from '../../../files/entities/file.entity';
 import { Post } from '../../entities/post.entity';
 
-// TODO исправить тесты с link
 export const mockCreatePostDto = (
   header = 'Test',
   text = 'Test',

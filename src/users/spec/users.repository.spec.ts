@@ -36,7 +36,7 @@ describe('UsersRepository', () => {
     jest.clearAllMocks();
   });
 
-  it('Dependencies should be defined', () => {
+  it('dependencies should be defined', () => {
     expect(usersRepository).toBeDefined();
     expect(usersModel).toBeDefined();
   });

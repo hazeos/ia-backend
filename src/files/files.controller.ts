@@ -38,11 +38,17 @@ import { MongoExceptionFilter } from '../shared/exceptions/mongo-exception.filte
 import { realpathSync } from 'fs';
 import { HasFileValidationPipe } from './pipes/has-file-validation.pipe';
 import { BadRequestExceptionFilter } from '../shared/exceptions/bad-request-exception.filter';
+import { UnauthorizedExceptionFilter } from '../shared/exceptions/unauthorized-exception.filter';
+import { ForbiddenExceptionFilter } from '../shared/exceptions/forbidden-exception.filter';
 
 @Controller('files')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @UseInterceptors(MongooseClassSerializerInterceptor(File))
-@UseFilters(MongoExceptionFilter)
+@UseFilters(
+  MongoExceptionFilter,
+  UnauthorizedExceptionFilter,
+  ForbiddenExceptionFilter,
+)
 export class FilesController {
   constructor(
     @Inject(FilesServiceToken)
@@ -79,6 +85,7 @@ export class FilesController {
   }
 
   @Get()
+  @RequiredPermissions(permissions.files.read)
   async findAll(): Promise<File[]> {
     return await this.filesService.findAll();
   }

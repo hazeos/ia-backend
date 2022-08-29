@@ -24,6 +24,6 @@ export interface Remove<T> {
   remove(id: string): Promise<T>;
 }
 
-export interface RemoveMany<T> {
-  remove(ids: string[]): Promise<T>;
+export interface RemoveAll<T> {
+  removeAll(ids: string[]): Promise<T>;
 }

@@ -31,11 +31,17 @@ import {
 } from 'nestjs-i18n';
 import { ObjectIdValidationPipe } from '../shared/pipes/object-id-validation.pipe';
 import { NotFoundExceptionFilter } from '../shared/exceptions/not-found-exception.filter';
+import { UnauthorizedExceptionFilter } from '../shared/exceptions/unauthorized-exception.filter';
+import { ForbiddenExceptionFilter } from '../shared/exceptions/forbidden-exception.filter';
 
 @Controller('posts')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @UseInterceptors(MongooseClassSerializerInterceptor(TPost))
-@UseFilters(MongoExceptionFilter)
+@UseFilters(
+  MongoExceptionFilter,
+  UnauthorizedExceptionFilter,
+  ForbiddenExceptionFilter,
+)
 export class PostsController {
   constructor(
     @Inject(PostsServiceToken)
