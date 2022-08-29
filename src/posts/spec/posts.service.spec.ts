@@ -48,9 +48,18 @@ describe('PostsService', () => {
   describe('create', () => {
     it('should create a post', async () => {
       const newPost = await postsService.create(
-        mockCreatePostDto('Test', 'Test', [], new User(), new User()),
+        mockCreatePostDto(
+          'Test',
+          'Test',
+          'test-link',
+          [],
+          new User(),
+          new User(),
+        ),
       );
-      expect(newPost).toEqual(mockPost('1', 'Test', 'Test', [new File()]));
+      expect(newPost).toEqual(
+        mockPost('1', 'Test', 'Test', 'test-link', [new File()]),
+      );
     });
   });
 
@@ -81,20 +90,25 @@ describe('PostsService', () => {
       const postId = '123';
       const postHeader = 'Test';
       const postText = 'Test';
+      const postLink = 'test-link';
       const postFiles = [new File()];
       const postUpdateFiles = ['123'];
       jest
         .spyOn(postsRepository, 'update')
-        .mockResolvedValue(mockPost(postId, postHeader, postText, postFiles));
+        .mockResolvedValue(
+          mockPost(postId, postHeader, postText, postLink, postFiles),
+        );
 
       const post = await postsService.update(
         postId,
-        mockUpdatePostDto(postHeader, postText, postUpdateFiles),
+        mockUpdatePostDto(postHeader, postText, postLink, postUpdateFiles),
       );
-      expect(post).toEqual(mockPost(postId, postHeader, postText, postFiles));
+      expect(post).toEqual(
+        mockPost(postId, postHeader, postText, postLink, postFiles),
+      );
       expect(postsRepository.update).toHaveBeenCalledWith(
         postId,
-        mockUpdatePostDto(postHeader, postText, postUpdateFiles),
+        mockUpdatePostDto(postHeader, postText, postLink, postUpdateFiles),
       );
     });
   });
