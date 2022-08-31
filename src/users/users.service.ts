@@ -13,7 +13,7 @@ import { UsersRepositoryToken } from '../shared/di.tokens';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { hash } from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
-import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
+import { NotFoundExceptionBodyType } from '../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class UsersService
@@ -48,7 +48,7 @@ export class UsersService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.USERS.USER_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return user;
   }
@@ -60,7 +60,7 @@ export class UsersService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.USERS.USER_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return user;
   }
@@ -78,7 +78,7 @@ export class UsersService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.USERS.USER_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return user;
   }

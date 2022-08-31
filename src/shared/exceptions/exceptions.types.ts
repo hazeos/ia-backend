@@ -1,10 +1,10 @@
-export type NotFoundExceptionType = {
+export type NotFoundExceptionBodyType = {
   statusCode: number;
   i18nMessage: string;
   i18nErrorText: string;
 };
 
-export type BadRequestExceptionType = {
+export type BadRequestExceptionBodyType = {
   statusCode: number;
   i18nMessage: string;
   i18nArgs: {

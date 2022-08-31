@@ -11,7 +11,7 @@ import { FilterQuery } from 'mongoose';
 import { IPostsRepository } from './interfaces/posts-repository.interface';
 import { PostsRepositoryToken } from '../shared/di.tokens';
 import { IPostsService } from './interfaces/posts-service.interface';
-import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
+import { NotFoundExceptionBodyType } from '../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class PostsService
@@ -41,7 +41,7 @@ export class PostsService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.POSTS.POST_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return post;
   }
@@ -53,7 +53,7 @@ export class PostsService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.POSTS.POST_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return post;
   }
@@ -65,7 +65,7 @@ export class PostsService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.POSTS.POST_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return post;
   }

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
-import { BadRequestExceptionType } from './exceptions.types';
+import { BadRequestExceptionBodyType } from './exceptions.types';
 import { getObjectPropertyByString } from '../functions/get-property-by-string.function';
 
 @Catch(BadRequestException)
@@ -16,7 +16,7 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const i18n = getI18nContextFromArgumentsHost(host);
-    const error = exception.getResponse() as BadRequestExceptionType;
+    const error = exception.getResponse() as BadRequestExceptionBodyType;
     const args = error.i18nArgs.map((arg) => {
       switch (arg.valueFrom) {
         case 'request':

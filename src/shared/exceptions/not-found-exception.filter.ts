@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
-import { NotFoundExceptionType } from './exceptions.types';
+import { NotFoundExceptionBodyType } from './exceptions.types';
 
 @Catch(NotFoundException)
 export class NotFoundExceptionFilter implements ExceptionFilter {
@@ -15,7 +15,7 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const i18n = getI18nContextFromArgumentsHost(host);
-    const error = exception.getResponse() as NotFoundExceptionType;
+    const error = exception.getResponse() as NotFoundExceptionBodyType;
     response.status(error.statusCode).json({
       statusCode: error.statusCode,
       message: i18n.t(error.i18nMessage),

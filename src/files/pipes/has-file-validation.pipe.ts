@@ -5,7 +5,7 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { BadRequestExceptionType } from '../../shared/exceptions/exceptions.types';
+import { BadRequestExceptionBodyType } from '../../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class HasFileValidationPipe implements PipeTransform {
@@ -19,7 +19,7 @@ export class HasFileValidationPipe implements PipeTransform {
         i18nMessage: 'validation.FILES.NO_FILE',
         i18nErrorText: 'errors.HTTP.BAD_REQUEST',
         i18nArgs: [],
-      } as BadRequestExceptionType);
+      } as BadRequestExceptionBodyType);
     } else {
       return value;
     }

@@ -9,6 +9,7 @@ import { FilesRepositoryToken, FilesServiceToken } from '../shared/di.tokens';
 import { FilesRepository } from './files.repository';
 import { diskStorage } from 'multer';
 import { Request } from 'Express';
+import { extname } from 'path';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { Request } from 'Express';
             file: Express.Multer.File,
             callback: (error: Error | null, filename: string) => void,
           ) {
-            callback(null, file.originalname);
+            callback(null, Date.now() + extname(file.originalname));
           },
         }),
         limits: {

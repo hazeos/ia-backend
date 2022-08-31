@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileMimeTypeValidationPipe } from './pipes/file-validation.pipe';
+import { FileMimeTypeValidationPipe } from './pipes/file-mime-type-validation.pipe';
 import { CreateFileDto } from './dto/create-file.dto';
 import { RequiredPermissions } from '../shared/decorators/required-permissions.decorator';
 import { permissions } from '../shared/constants/permissions.constant';

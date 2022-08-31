@@ -11,7 +11,7 @@ import { IFilesService } from './interfaces/files-service.interface';
 import { FilesRepositoryToken } from '../shared/di.tokens';
 import { IFilesRepository } from './interfaces/files-repository.interface';
 import { FilterQuery } from 'mongoose';
-import { NotFoundExceptionType } from '../shared/exceptions/exceptions.types';
+import { NotFoundExceptionBodyType } from '../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class FilesService
@@ -41,7 +41,7 @@ export class FilesService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.FILES.POST_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return file;
   }
@@ -53,7 +53,7 @@ export class FilesService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.FILES.POST_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return file;
   }
@@ -65,7 +65,7 @@ export class FilesService
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.FILES.POST_NOT_FOUND',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return file;
   }

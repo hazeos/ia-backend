@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
-import { BadRequestExceptionType } from '../../shared/exceptions/exceptions.types';
+import { BadRequestExceptionBodyType } from '../../shared/exceptions/exceptions.types';
 
 @Injectable()
 export class FileMimeTypeValidationPipe implements PipeTransform {
@@ -36,7 +36,7 @@ export class FileMimeTypeValidationPipe implements PipeTransform {
           },
         ],
         i18nErrorText: 'errors.HTTP.BAD_REQUEST',
-      } as BadRequestExceptionType);
+      } as BadRequestExceptionBodyType);
     }
     return value;
   }

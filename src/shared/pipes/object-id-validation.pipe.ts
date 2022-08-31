@@ -6,7 +6,7 @@ import {
   PipeTransform,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { NotFoundExceptionType } from '../exceptions/exceptions.types';
+import { NotFoundExceptionBodyType } from '../exceptions/exceptions.types';
 
 @Injectable()
 export class ObjectIdValidationPipe implements PipeTransform<string, string> {
@@ -16,7 +16,7 @@ export class ObjectIdValidationPipe implements PipeTransform<string, string> {
         statusCode: HttpStatus.NOT_FOUND,
         i18nMessage: 'errors.MONGO.INVALID_OBJECT_ID',
         i18nErrorText: 'errors.HTTP.NOT_FOUND',
-      } as NotFoundExceptionType);
+      } as NotFoundExceptionBodyType);
     }
     return value;
   }
