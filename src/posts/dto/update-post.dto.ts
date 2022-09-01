@@ -6,4 +6,5 @@ export class UpdatePostDto extends PickType(CreatePostDto, [
   'text',
   'link',
   'files',
+  'updatedBy',
 ] as const) {}

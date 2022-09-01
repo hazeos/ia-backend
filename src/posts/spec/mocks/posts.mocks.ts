@@ -25,11 +25,13 @@ export const mockUpdatePostDto = (
   text = 'Test',
   link = 'test-link',
   files = ['123'],
+  updatedBy = new User(),
 ): UpdatePostDto => ({
   header,
   text,
   link,
   files,
+  updatedBy,
 });
 
 export const mockPost = (

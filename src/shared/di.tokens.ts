@@ -1,8 +1,10 @@
-export const PostsServiceToken = Symbol('PostsServiceToken');
-export const PostsRepositoryToken = Symbol('PostsRepositoryToken');
+export const PostsServiceToken = Symbol('PostsService');
+export const PostsRepositoryToken = Symbol('PostsRepository');
 
-export const UsersServiceToken = Symbol('UsersServiceToken');
-export const UsersRepositoryToken = Symbol('UsersRepositoryToken');
+export const UsersServiceToken = Symbol('UsersService');
+export const UsersRepositoryToken = Symbol('UsersRepository');
 
-export const FilesServiceToken = Symbol('FilesServiceToken');
-export const FilesRepositoryToken = Symbol('FilesRepositoryToken');
+export const FilesServiceToken = Symbol('FilesService');
+export const FilesRepositoryToken = Symbol('FilesRepository');
+
+export const FilesystemServiceToken = Symbol('FilesystemService');

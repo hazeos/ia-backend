@@ -48,6 +48,7 @@ import { ForbiddenExceptionFilter } from '../shared/exceptions/forbidden-excepti
   MongoExceptionFilter,
   UnauthorizedExceptionFilter,
   ForbiddenExceptionFilter,
+  NotFoundExceptionFilter,
 )
 export class FilesController {
   constructor(
@@ -92,7 +93,6 @@ export class FilesController {
 
   @Get(':id')
   @RequiredPermissions(permissions.files.read)
-  @UseFilters(NotFoundExceptionFilter)
   async findOneById(
     @Param('id', ObjectIdValidationPipe) id: string,
   ): Promise<File> {
@@ -100,18 +100,31 @@ export class FilesController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('file'))
   @RequiredPermissions(permissions.files.update)
-  @UseFilters(NotFoundExceptionFilter)
+  @UsePipes(
+    new ValidationPipe({ exceptionFactory: i18nValidationErrorFactory }),
+  )
+  @UseFilters(
+    BadRequestExceptionFilter,
+    new I18nValidationExceptionFilter({ detailedErrors: false }),
+  )
   async update(
     @Param('id', ObjectIdValidationPipe) id: string,
+    @UploadedFile(HasFileValidationPipe, FileMimeTypeValidationPipe)
+    file: Express.Multer.File,
     @Body() updateFileDto: UpdateFileDto,
+    @Req() req,
   ): Promise<File> {
-    return await this.filesService.update(id, updateFileDto);
+    return await this.filesService.update(id, {
+      name: updateFileDto.name,
+      path: realpathSync(file.path, { encoding: 'utf-8' }),
+      updatedBy: req.user,
+    } as UpdateFileDto);
   }
 
   @Delete(':id')
   @RequiredPermissions(permissions.files.delete)
-  @UseFilters(NotFoundExceptionFilter)
   async remove(@Param('id', ObjectIdValidationPipe) id: string): Promise<File> {
     return await this.filesService.remove(id);
   }

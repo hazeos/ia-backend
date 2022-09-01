@@ -12,6 +12,7 @@ import { FilesRepositoryToken } from '../shared/di.tokens';
 import { IFilesRepository } from './interfaces/files-repository.interface';
 import { FilterQuery } from 'mongoose';
 import { NotFoundExceptionBodyType } from '../shared/exceptions/exceptions.types';
+import { unlink } from 'fs/promises';
 
 @Injectable()
 export class FilesService
@@ -71,6 +72,12 @@ export class FilesService
   }
 
   async remove(id: string): Promise<File> {
-    return await this.filesRepository.remove(id);
+    const deletedFile = await this.filesRepository.remove(id);
+    try {
+      await unlink(deletedFile.path);
+    } catch (e) {
+      console.error(e);
+    }
+    return deletedFile;
   }
 }

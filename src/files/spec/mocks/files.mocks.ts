@@ -1,6 +1,7 @@
 import { CreateFileDto } from '../../dto/create-file.dto';
 import { User } from '../../../users/entities/user.entity';
 import { File } from '../../entities/file.entity';
+import { UpdateFileDto } from '../../dto/update-file.dto';
 
 export const mockCreateFileDto = (
   name: string,
@@ -11,6 +12,16 @@ export const mockCreateFileDto = (
   name,
   path,
   createdBy,
+  updatedBy,
+});
+
+export const mockUpdateFileDto = (
+  name: string,
+  path: string,
+  updatedBy = new User(),
+): UpdateFileDto => ({
+  name,
+  path,
   updatedBy,
 });
 

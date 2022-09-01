@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
 import { CreateFileDto } from './create-file.dto';
+import { PickType } from '@nestjs/swagger';
 
-export class UpdateFileDto extends PartialType(CreateFileDto) {}
+export class UpdateFileDto extends PickType(CreateFileDto, [
+  'name',
+  'path',
+  'updatedBy',
+] as const) {}
